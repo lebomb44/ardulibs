@@ -1,0 +1,23 @@
+#######################################
+# Syntax Coloring Map Fifo_U08
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+Fifo_U08	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+init	KEYWORD2
+push	KEYWORD2
+pop	KEYWORD2
+isEmpty	KEYWORD2
+isFull	KEYWORD2
+purge	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
