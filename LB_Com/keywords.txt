@@ -1,0 +1,28 @@
+#######################################
+# Syntax Coloring Map LB_Com
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+LB_Com	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+init	KEYWORD2
+run	KEYWORD2
+rxIsReady	KEYWORD2
+rxGetSrc	KEYWORD2
+rxGetDst	KEYWORD2
+rxGetCmd	KEYWORD2
+rxLetLen	KEYWORD2
+rxGetData	KEYWORD2
+rxRelease	KEYWORD2
+txIsReady	KEYWORD2
+send	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################

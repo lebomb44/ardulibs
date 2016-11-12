@@ -1,0 +1,28 @@
+#######################################
+# Syntax Coloring Map LB_NRF24
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+LB_NRF24	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+init	KEYWORD2
+push	KEYWORD2
+packetIsReady	KEYWORD2
+getSrc	KEYWORD2
+getDst	KEYWORD2
+getCmd	KEYWORD2
+getLen	KEYWORD2
+getRawLen	KEYWORD2
+getData	KEYWORD2
+getRawData	KEYWORD2
+send	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
