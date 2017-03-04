@@ -215,13 +215,13 @@ void HT12E::purge(void)
 
 bool HT12E::isShort(uint16_t timeU16)
 {
-  if((600 < timeU16) && (timeU16 < 1000)) { return true; }
+  if((300 < timeU16) && (timeU16 < 1000)) { return true; }
   else { return false; }
 }
 
 bool HT12E::isLong(uint16_t timeU16)
 {
-  if((1100 < timeU16) && (timeU16 < 1400)) { return true; }
+  if((1100 < timeU16) && (timeU16 < 1500)) { return true; }
   else { return false; }
 }
 
@@ -233,7 +233,7 @@ ISR(INT0_vect)
   dataU16 = TCNT1;
   TCNT1 = 0x0000;
 
-  if((600 < dataU16) && (dataU16 < 1400))
+  if((300 < dataU16) && (dataU16 < 1500))
   {
     if(false == ht12e_extInt0_Fifo->isFull())
     {
