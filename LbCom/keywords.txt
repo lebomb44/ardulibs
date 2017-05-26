@@ -1,12 +1,12 @@
 #######################################
-# Syntax Coloring Map LB_Com
+# Syntax Coloring Map LbCom
 #######################################
 
 #######################################
 # Datatypes (KEYWORD1)
 #######################################
 
-LB_Com	KEYWORD1
+LbCom	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
@@ -19,8 +19,6 @@ rxGetDst	KEYWORD2
 rxGetCmd	KEYWORD2
 rxLetLen	KEYWORD2
 rxGetData	KEYWORD2
-rxRelease	KEYWORD2
-txIsReady	KEYWORD2
 send	KEYWORD2
 
 #######################################
