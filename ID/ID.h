@@ -1,31 +1,50 @@
 #ifndef ID_h
 #define ID_h
 
-#define LOST_ID 1
-#define HOME_EASY_ID 2
-#define ROVER0_ID 3
-#define ROVER0_RC_ID 4
-#define TV_RC_ID 5
+#define ID_LOST                1
+#define ID_HOME_EASY           2
+#define ID_GSM                 3
+#define ID_NFR24               4
+#define ID_BOURDILOT_FRIDGE    5
+#define ID_BOURDILOT_ROVER_IN  6
+#define ID_BOURDILOT_ROVER_OUT 7
+#define ID_BOURDILOT_TV_RC     8
 
-#define HOME_EASY_ROVER0_RC 0x12345678
+#define ID_HOME_EASY_SEND_TC 1
+#define ID_HOME_EASY_RCV_TM  2
 
-#define HOME_EASY_UNKNOWN_CMD 0
-#define HOME_EASY_DIG_CMD 1
-#define HOME_EASY_ANA_CMD 2
+#define ID_GSM_READY_TC    1
+#define ID_GSM_READY_TM    2
+#define ID_GSM_NETWORK_TC  3
+#define ID_GSM_NETWORK_TM  4
+#define ID_GSM_SMS_SEND_TC 5
+#define ID_GSM_SMS_GET_TC  6
+#define ID_GSM_SMS_GET_TM  7
 
-#define ROVER_CMD_TM 1
-#define ROVER_CMD_CAM_POWER 2
-#define ROVER_CMD_CAM_LR 3
-#define ROVER_CMD_CAM_UD 4
-#define ROVER_CMD_CHARGE 5
-#define ROVER_CMD_FWD 6
-#define ROVER_CMD_TURN 7
-#define ROVER_CMD_STOP 8
+#define ID_NRF24_NETWORK_TC 1
+#define ID_NRF24_NETWORK_TM 2
 
-#define TV_RC_CMD_TM 1
-#define TV_RC_CMD_CAM_POWER 2
-#define TV_RC_CMD_IR_RAW_SAMSUNG 3
-#define TV_RC_CMD_IR_MACRO_SAMSUNG_GO_HDMI1 4
-#define TV_RC_CMD_IR_MACRO_SAMSUNG_GO_TV 5
+#define ID_BOURDILOT_FRIDGE_NETWORK_TC 1
+#define ID_BOURDILOT_FRIDGE_NETWORK_TM 2
+#define ID_BOURDILOT_FRIDGE_TEMP_TC    3
+#define ID_BOURDILOT_FRIDGE_TEMP_TM    4
+
+#define ID_ROVER_ALL_TM            1
+#define ID_ROVER_CHARGE_CONNECT_TC 2
+#define ID_ROVER_CHARGE_CONNECT_TM 3
+#define ID_ROVER_CHARGE_LEVEL_TC   4
+#define ID_ROVER_CHARGE_LEVEL_TC   5
+#define ID_ROVER_CAM_POWER_TC      6
+#define ID_ROVER_CAM_LR_TC         7
+#define ID_ROVER_CAM_UD_TC         8
+#define ID_ROVER_FWD_TC            9
+#define ID_ROVER_TURN_TC           10
+#define ID_ROVER_STOP_TC           11
+
+#define ID_TV_RC_ALL_TM                        1
+#define ID_TV_RC_CAM_POWER                     2
+#define ID_TV_RC_IR_RAW_SAMSUNG                3
+#define ID_TV_RC_IR_MACRO_SAMSUNG_GO_HDMI1     4
+#define ID_TV_RC_IR_MACRO_SAMSUNG_GO_TV        5
 
 #endif
