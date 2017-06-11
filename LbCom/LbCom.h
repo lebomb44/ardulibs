@@ -4,7 +4,7 @@
 #include <inttypes.h>
 #include <Fifo_U08.h>
 
-#define LB_COM_DATA_MAX_SIZE (4+255)
+#define LBCOM_DATA_MAX_SIZE (4+255)
 
 class LbCom
 {
@@ -22,7 +22,7 @@ public:
   void send(uint8_t src, uint8_t dst, uint8_t cmd, uint8_t len, uint8_t * data);
 private:
   Fifo_U08 rx_fifo;
-  uint8_t rxData[LB_COM_DATA_MAX_SIZE];
+  uint8_t rxData[LBCOM_DATA_MAX_SIZE];
   uint16_t rx_step;
   void send_char(uint8_t data);
 };
