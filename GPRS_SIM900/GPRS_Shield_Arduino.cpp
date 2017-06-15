@@ -34,10 +34,10 @@
 
 GPRS* GPRS::inst;
 
-GPRS::GPRS(uint8_t tx, uint8_t rx, uint32_t baudRate):gprsSerial(tx,rx)
+GPRS::GPRS(HardwareSerial * serial, uint32_t baudRate):gprsSerial(serial)
 {
     inst = this;
-    sim900_init(&gprsSerial, baudRate);
+    sim900_init(gprsSerial, baudRate);
 }
 
 bool GPRS::init(void)
@@ -785,16 +785,6 @@ int GPRS::recv(char* buf, int len)
     sim900_clean_buffer(buf,len);
     sim900_read_buffer(buf,len);   //Ya he llamado a la funcion con la longitud del buffer - 1 y luego le estoy añadiendo el 0
     return strlen(buf);
-}
-
-void GPRS::listen(void)
-{
-	gprsSerial.listen();
-}
-
-bool GPRS::isListening(void)
-{
-	return gprsSerial.isListening();
 }
 
 uint32_t GPRS::str_to_ip(const char* str)

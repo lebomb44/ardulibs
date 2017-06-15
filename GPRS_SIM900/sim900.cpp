@@ -31,11 +31,11 @@
 
 #include "sim900.h"
 
-SoftwareSerial *serialSIM900 = NULL;
+HardwareSerial *serialSIM900 = NULL;
 
 void  sim900_init(void * uart_device, uint32_t baud)
 {
-    serialSIM900 = (SoftwareSerial*)uart_device;
+    serialSIM900 = (HardwareSerial*)uart_device;
 	  serialSIM900->begin(baud);
 }
 
