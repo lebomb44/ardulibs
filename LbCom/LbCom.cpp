@@ -72,22 +72,26 @@ void LbCom::run(void)
       dataU08 = this->rx_fifo.pop();
       if(0 < this->rx_step)
       {
-        if(this->rx_step < LBCOM_DATA_MAX_SIZE+1)
+        if(this->rx_step < LBCOM_FRAME_MAX_SIZE+1)
         {
-          if(1+4+this->rxGetLen() == this->rx_step)
+          if(this->rxGetFrameLen() == this->rx_step)
           {
             uint8_t crc = 0;
             uint16_t i = 0;
             for(i=0; i<(this->rx_step-1); i++)
             {
-              crc = _crc_ibutton_update(crc, this->rxData[i]);
+              crc = _crc_ibutton_update(crc, this->rxFrame[i]);
             }
-            if(dataU08 == crc) { this->rx_step++; }
+            if(dataU08 == crc)
+            {
+              this->rxFrame[this->rx_step-1] = dataU08;
+              this->rx_step++;
+            }
             else { this->rxRelease(); }
           }
           else
           {
-            this->rxData[this->rx_step-1] = dataU08;
+            this->rxFrame[this->rx_step-1] = dataU08;
             this->rx_step++;
           }
         }
@@ -100,42 +104,52 @@ void LbCom::run(void)
 
 bool LbCom::rxIsReady(void)
 {
-  if(1+4+this->rxGetLen() < this->rx_step) { return true; }
+  if(this->rxGetFrameLen() < this->rx_step) { return true; }
   else { return false; }
 }
 
 uint8_t LbCom::rxGetSrc(void)
 {
-  return this->rxData[0];
+  return this->rxFrame[0];
 }
 
 uint8_t LbCom::rxGetDst(void)
 {
-  return this->rxData[1];
+  return this->rxFrame[1];
 }
 
 uint8_t LbCom::rxGetCmd(void)
 {
-  return this->rxData[2];
+  return this->rxFrame[2];
 }
 
-uint8_t LbCom::rxGetLen(void)
+uint8_t LbCom::rxGetDataLen(void)
 {
-  return this->rxData[3];
+  return this->rxFrame[3];
+}
+
+uint16_t LbCom::rxGetFrameLen(void)
+{
+  return 4+rxGetDataLen()+1;
 }
 
 uint8_t * LbCom::rxGetData(void)
 {
-  return &(this->rxData[4]);
+  return &(this->rxFrame[4]);
+}
+
+uint8_t * LbCom::rxGetFrame(void)
+{
+  return &(this->rxFrame[0]);
 }
 
 void LbCom::rxRelease(void)
 {
   uint16_t i = 0;
 
-  for(i=0; i<(LBCOM_DATA_MAX_SIZE); i++)
+  for(i=0; i<(LBCOM_FRAME_MAX_SIZE); i++)
   {
-    this->rxData[i] = 0;
+    this->rxFrame[i] = 0;
   }
   this->rx_step = 0;
 }
