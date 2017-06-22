@@ -22,11 +22,14 @@ public:
   uint8_t * rxGetFrame(void);
   void rxRelease(void);
   void send(uint8_t src, uint8_t dst, uint8_t cmd, uint8_t len, uint8_t * data);
+  void enablePrint(void);
+  void disablePrint(void);
 private:
   Fifo_U08 rx_fifo;
   uint8_t rxFrame[LBCOM_FRAME_MAX_SIZE];
   uint16_t rx_step;
   void send_char(uint8_t data);
+  bool printIsEnabled;
 };
 
 #endif

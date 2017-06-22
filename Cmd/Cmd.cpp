@@ -60,8 +60,6 @@ const char cmd_unrecog[] PROGMEM = "Command not recognized. Try 'help' to list c
 /**************************************************************************/
 void cmd_display()
 {
-    char buf[100];
-
     Serial.print("> ");
 
     fflush(stdout);

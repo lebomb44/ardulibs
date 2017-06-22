@@ -20,7 +20,9 @@ rxGetCmd	KEYWORD2
 rxLetLen	KEYWORD2
 rxGetData	KEYWORD2
 rxGetFrame	KEYWORD2
-send	KEYWORD2
+send		KEYWORD2
+enablePrint	KEYWORD2
+disablePrint	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

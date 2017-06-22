@@ -23,6 +23,7 @@ void LbCom::init(void)
   this->rxRelease();
 
   uart_rx_fifo = &(this->rx_fifo);
+  printIsEnabled = false;
 
   digitalWrite(1, HIGH);
 
@@ -168,6 +169,16 @@ void LbCom::send(uint8_t src, uint8_t dst, uint8_t cmd, uint8_t len, uint8_t * d
     this->send_char(data[i]); crc = _crc_ibutton_update(crc, data[i]);
   }
   this->send_char(crc);
+}
+
+void LbCom::enablePrint(void)
+{
+  printIsEnabled = true;
+}
+
+void LbCom::disablePrint(void)
+{
+  printIsEnabled = false;
 }
 
 void LbCom::send_char(uint8_t data)

@@ -23,6 +23,8 @@ rxRelease	KEYWORD2
 txIsReady	KEYWORD2
 send	KEYWORD2
 purge	KEYWORD2
+enablePrint	KEYWORD2
+disablePrint	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

@@ -19,6 +19,7 @@ void HomeEasy::init(void)
   this->code = 0;
   for(i=0; i<64; i++) { this->codeBitStream[i] = false; }
   this->step = 0;
+  disablePrint();
 
   extInt0_Fifo = &(this->rx_fifo);
 
@@ -224,6 +225,21 @@ void HomeEasy::send(uint32_t code)
 void HomeEasy::purge(void)
 {
   rx_fifo.purge();
+}
+
+void HomeEasy::enablePrint(void)
+{
+  _printIsEnabled = true;
+}
+
+void HomeEasy::disablePrint(void)
+{
+  _printIsEnabled = false;
+}
+
+bool HomeEasy::printIsEnabled(void)
+{
+  return _printIsEnabled;
 }
 
 /******************** PRIVATE ***************************/
