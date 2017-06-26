@@ -26,7 +26,7 @@ public:
   void disablePrint(void);
 private:
   Fifo_U08 rx_fifo;
-  uint8_t rxFrame[LBCOM_FRAME_MAX_SIZE];
+  uint8_t * rxFrame;
   uint16_t rx_step;
   void send_char(uint8_t data);
   bool printIsEnabled;

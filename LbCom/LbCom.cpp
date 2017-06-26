@@ -10,7 +10,7 @@
 
 Fifo_U08 * uart_rx_fifo = NULL;
 
-LbCom::LbCom()
+LbCom::LbCom(): rxFrame(NULL)
 {
   this->init();
 }
@@ -20,10 +20,13 @@ void LbCom::init(void)
   uint16_t i = 0;
 
   this->rx_fifo.init();
+  if(NULL == rxFrame) {
+    rxFrame = malloc(LBCOM_FRAME_MAX_SIZE);
+  }
   this->rxRelease();
+  printIsEnabled = false;
 
   uart_rx_fifo = &(this->rx_fifo);
-  printIsEnabled = false;
 
   digitalWrite(1, HIGH);
 
@@ -41,7 +44,7 @@ void LbCom::init(void)
 
   sbi(UCSR2B, RXCIE2); // Bit 7 : RXCIEn: RX Complete Interrupt Enable n : Enabled
   cbi(UCSR2B, TXCIE2); // Bit 6 : TXCIEn: TX Complete Interrupt Enable n : Disabled
-  sbi(UCSR2B, UDRIE2); // Bit 5 : UDRIEn: USART Data Register Empty Interrupt Enable n : Enabled
+  //FIXME sbi(UCSR2B, UDRIE2); // Bit 5 : UDRIEn: USART Data Register Empty Interrupt Enable n : Enabled
   cbi(UCSR2B, UCSZ22); // Bit 2 : UCSZn2: Character Size n : 011 = 8-bit
   // Bit 1 (RO) : RXB8n: Receive Data Bit 8 n
   cbi(UCSR2B, TXB82); // Bit 0 : TXB8n: Transmit Data Bit 8 n : Disabled

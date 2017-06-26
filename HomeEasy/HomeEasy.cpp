@@ -107,7 +107,7 @@ void HomeEasy::run(void)
     if(false == this->rx_fifo.isEmpty())
     {
       dataU16 = this->rx_fifo.pop();
-      Serial.println(dataU16);
+      //Serial.println(dataU16);
       if((1 < this->step) && (this->step < 130))
       {
         /* Serial.print(dataU16); Serial.print(": "); Serial.println(this->step); */
@@ -247,13 +247,13 @@ bool HomeEasy::printIsEnabled(void)
 bool HomeEasy::isHigh(uint16_t timeU16)
 {
   //if((495 < timeU16) && (timeU16 < 640)) { return true; }
-  if((432 < timeU16) && (timeU16 < 700)) { return true; }
+  if((200 < timeU16) && (timeU16 < 900)) { return true; }
   else { return false; }
 }
 
 bool HomeEasy::isLowShort(uint16_t timeU16)
 {
-  if((432 < timeU16) && (timeU16 < 700)) { return true; }
+  if((200 < timeU16) && (timeU16 < 900)) { return true; }
   else { return false; }
 }
 
@@ -278,11 +278,12 @@ ISR(INT0_vect)
   dataU16 = TCNT1;
   TCNT1 = 0x0000;
 
-  if((432 < dataU16) && (dataU16 < 7000))
+  if((200 < dataU16) && (dataU16 < 7000))
   {
     if(false == extInt0_Fifo->isFull())
     {
     	extInt0_Fifo->push(dataU16);
     }
   }
+  /* else { Serial.println(dataU16); } */
 }
