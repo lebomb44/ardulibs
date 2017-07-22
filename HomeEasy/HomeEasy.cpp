@@ -116,7 +116,7 @@ void HomeEasy::run(void)
           if(this->isHigh(dataU16)) { this->step++; }
           else
           {
-            /* Serial.print(dataU16); Serial.print(": Bad high at step "); Serial.println(this->step); */
+            //Serial.print(dataU16); Serial.print(": Bad high at step "); Serial.println(this->step);
             this->step = 0;
           }
         }
@@ -128,7 +128,7 @@ void HomeEasy::run(void)
             if(this->isLowLong(dataU16)) { this->codeBitStream[(this->step-3)/2] = true; this->step++; }
             else
             {
-              /* Serial.print(dataU16); Serial.print(": Bad low at step "); Serial.println(this->step); */
+              //Serial.print(dataU16); Serial.print(": Bad low at step "); Serial.println(this->step);
               this->step = 0;
             }
           }
@@ -150,7 +150,7 @@ void HomeEasy::run(void)
               }
               else
               {
-                /* Serial.print("Bad sequence-");Serial.print(cBit);Serial.print("=");Serial.print(codeBitStream[2*cBit]);Serial.println(codeBitStream[(2*cBit) +1]); */
+                //Serial.print("Bad sequence-");Serial.print(cBit);Serial.print("=");Serial.print(codeBitStream[2*cBit]);Serial.println(codeBitStream[(2*cBit) +1]);
                 this->rxRelease();
               }
             }
@@ -162,7 +162,7 @@ void HomeEasy::run(void)
         if(this->isLowSync(dataU16)) { this->step++; }
         else
         {
-          /* Serial.print(dataU16); Serial.print(": Bad lowSync at step "); Serial.println(this->step); */
+          //Serial.print(dataU16); Serial.print(": Bad lowSync at step "); Serial.println(this->step);
           this->step = 0;
         }
       }
@@ -246,27 +246,24 @@ bool HomeEasy::printIsEnabled(void)
 
 bool HomeEasy::isHigh(uint16_t timeU16)
 {
-  //if((495 < timeU16) && (timeU16 < 640)) { return true; }
-  if((200 < timeU16) && (timeU16 < 900)) { return true; }
+  if((200 < timeU16) && (timeU16 < 1500)) { return true; }
   else { return false; }
 }
 
 bool HomeEasy::isLowShort(uint16_t timeU16)
 {
-  if((200 < timeU16) && (timeU16 < 900)) { return true; }
+  if((200 < timeU16) && (timeU16 < 1500)) { return true; }
   else { return false; }
 }
 
 bool HomeEasy::isLowLong(uint16_t timeU16)
 {
-  //if((2340 < timeU16) && (timeU16 < 2860)) { return true; }
-  if((2340 < timeU16) && (timeU16 < 3000)) { return true; }
+  if((2340 < timeU16) && (timeU16 < 5000)) { return true; }
   else { return false; }
 }
 
 bool HomeEasy::isLowSync(uint16_t timeU16)
 {
-  //if((4815 < timeU16) && (timeU16 < 5885)) { return true; }
   if((3000 < timeU16) && (timeU16 < 7000)) { return true; }
   else { return false; }
 }
@@ -285,5 +282,5 @@ ISR(INT0_vect)
     	extInt0_Fifo->push(dataU16);
     }
   }
-  /* else { Serial.println(dataU16); } */
+  //else { Serial.println(dataU16); }
 }
