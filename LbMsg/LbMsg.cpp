@@ -27,33 +27,37 @@ uint8_t LbMsg::getCmd(void) { return getFrame()[2]; }
 void LbMsg::setCmd(uint8_t cmd) { getFrame()[2] = cmd; }
 uint8_t LbMsg::getDataLen(void) { return getFrame()[3]; }
 void LbMsg::setDataLen(uint8_t dataLen) {
-  if(NULL != _frame) {
-    if(getDataLen() < dataLen) {
-      delete _frame; _frame = NULL;
-    }
+  if(NULL == _frame) {
     _frame = new uint8_t[4+dataLen+1];
   }
+  else {
+    if(getDataLen() < dataLen) {
+      delete _frame; _frame = NULL;
+      _frame = new uint8_t[4+dataLen+1];
+    }
+  }
+  if(NULL == _frame) { Serial.println("ERROR in setDataLen _frame is NULL"); delay(10000); return; }
   _frame[3] = dataLen;
 }
 uint8_t * LbMsg::getData(void) { return &(getFrame()[4]); }
-uint8_t LbMsg::getCKS(void) { return _frame[getFrameLen()-1]; }
-void LbMsg::setCKS(uint8_t cks) { _frame[getFrameLen()-1] = cks; }
+uint8_t LbMsg::getCRC(void) { return _frame[getFrameLen()-1]; }
+void LbMsg::setCRC(uint8_t crc) { _frame[getFrameLen()-1] = crc; }
 uint16_t LbMsg::getFrameLen(void) { return 4+((uint16_t)getDataLen())+1; }
 uint8_t * LbMsg::getFrame(void) { return _frame; }
 
 void LbMsg::compute(void) {
-  setCKS(0);
+  setCRC(0);
   for(uint16_t i=0; i<(getFrameLen()-1); i++) {
-    setCKS(getCKS() + getFrame()[i]);
+    setCRC(_crc_ibutton_update(getCRC(), getFrame()[i]));
   }
 }
 
 bool LbMsg::check(void) {
-  uint8_t cks = 0;
+  uint8_t crc = 0;
   for(uint16_t i=0; i<(getFrameLen()-1); i++) {
-    cks = cks + getFrame()[i];
+    crc = _crc_ibutton_update(crc, getFrame()[i]);
   }
-  if(getCKS() == cks) { return true; }
+  if(getCRC() == crc) { return true; }
   else { return false; }
 }
 

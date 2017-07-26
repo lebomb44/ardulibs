@@ -10,7 +10,7 @@
 
 Fifo_U08 * uart_rx_fifo = NULL;
 
-LbCom::LbCom(): rxFrame(NULL)
+LbCom::LbCom(): _rx_msg(LBMSG_DATA_MAX_SIZE), _rx_step(0), printIsEnabled(false)
 {
   this->init();
 }
@@ -20,10 +20,8 @@ void LbCom::init(void)
   uint16_t i = 0;
 
   this->rx_fifo.init();
-  if(NULL == rxFrame) {
-    rxFrame = malloc(LBCOM_FRAME_MAX_SIZE);
-  }
-  this->rxRelease();
+  this->_rx_msg.init(LBMSG_DATA_MAX_SIZE);
+  this->rxReleaseMsg();
   printIsEnabled = false;
 
   uart_rx_fifo = &(this->rx_fifo);
@@ -67,111 +65,59 @@ void LbCom::init(void)
 
 void LbCom::run(void)
 {
-  uint8_t dataU08 = 0;
-
-  if(false == this->rxIsReady())
+  if(false == this->rxMsgIsReady())
   {
     if(false == this->rx_fifo.isEmpty())
     {
-      dataU08 = this->rx_fifo.pop();
-      if(0 < this->rx_step)
+      uint8_t dataU08 = this->rx_fifo.pop();
+      if(0 < this->_rx_step)
       {
-        if(this->rx_step < LBCOM_FRAME_MAX_SIZE+1)
+        if(this->_rx_step < LBMSG_FRAME_MAX_SIZE+1)
         {
-          if(this->rxGetFrameLen() == this->rx_step)
-          {
-            uint8_t crc = 0;
-            uint16_t i = 0;
-            for(i=0; i<(this->rx_step-1); i++)
-            {
-              crc = _crc_ibutton_update(crc, this->rxFrame[i]);
-            }
-            if(dataU08 == crc)
-            {
-              this->rxFrame[this->rx_step-1] = dataU08;
-              this->rx_step++;
-            }
-            else { this->rxRelease(); }
-          }
-          else
-          {
-            this->rxFrame[this->rx_step-1] = dataU08;
-            this->rx_step++;
-          }
+          this->_rx_msg.getFrame()[this->_rx_step-1] = dataU08;
+          this->_rx_step++;
         }
-        else { this->rxRelease(); }
+        else { this->rxReleaseMsg(); }
       }
-      if(0 == this->rx_step) { if(0xAA == dataU08) { this->rx_step++; } }
+      if(0 == this->_rx_step) { if(0xAA == dataU08) { this->_rx_step++; } }
     }
   }
 }
 
-bool LbCom::rxIsReady(void)
+bool LbCom::rxMsgIsReady(void)
 {
-  if(this->rxGetFrameLen() < this->rx_step) { return true; }
+  if(this->_rx_msg.getFrameLen() < this->_rx_step) { return true; }
   else { return false; }
 }
 
-uint8_t LbCom::rxGetSrc(void)
+void LbCom::rxReleaseMsg(void)
 {
-  return this->rxFrame[0];
-}
-
-uint8_t LbCom::rxGetDst(void)
-{
-  return this->rxFrame[1];
-}
-
-uint8_t LbCom::rxGetCmd(void)
-{
-  return this->rxFrame[2];
-}
-
-uint8_t LbCom::rxGetDataLen(void)
-{
-  return this->rxFrame[3];
-}
-
-uint16_t LbCom::rxGetFrameLen(void)
-{
-  return 4+rxGetDataLen()+1;
-}
-
-uint8_t * LbCom::rxGetData(void)
-{
-  return &(this->rxFrame[4]);
-}
-
-uint8_t * LbCom::rxGetFrame(void)
-{
-  return &(this->rxFrame[0]);
-}
-
-void LbCom::rxRelease(void)
-{
-  uint16_t i = 0;
-
-  for(i=0; i<(LBCOM_FRAME_MAX_SIZE); i++)
+  for(uint16_t i=0; i<4; i++)
   {
-    this->rxFrame[i] = 0;
+    this->_rx_msg.getFrame()[i] = 0;
   }
-  this->rx_step = 0;
+  this->_rx_step = 0;
 }
 
-void LbCom::send(uint8_t src, uint8_t dst, uint8_t cmd, uint8_t len, uint8_t * data)
+void LbCom::rxGetMsg(LbMsg & msg)
 {
-  uint16_t i = 0;
-  uint8_t crc = 0;
-  this->send_char(0xAA); crc = _crc_ibutton_update(crc, 0xAA);
-  this->send_char(src); crc = _crc_ibutton_update(crc, src);
-  this->send_char(dst); crc = _crc_ibutton_update(crc, dst);
-  this->send_char(cmd); crc = _crc_ibutton_update(crc, cmd);
-  this->send_char(len); crc = _crc_ibutton_update(crc, len);
-  for(i=0; i<len ; i++)
+  msg.setDataLen(_rx_msg.getDataLen());
+  uint16_t len = msg.getFrameLen();
+  for(uint16_t i=0; i<len ; i++)
   {
-    this->send_char(data[i]); crc = _crc_ibutton_update(crc, data[i]);
+    msg.getFrame()[i] = _rx_msg.getFrame()[i];
   }
-  this->send_char(crc);
+  rxReleaseMsg();
+}
+
+void LbCom::send(LbMsg & msg)
+{
+  this->send_char(0xAA);
+  uint16_t len = msg.getFrameLen();
+  for(uint16_t i=0; i<len ; i++)
+  {
+    this->send_char(msg.getFrame()[i]);
+  }
 }
 
 void LbCom::enablePrint(void)
@@ -187,6 +133,7 @@ void LbCom::disablePrint(void)
 void LbCom::send_char(uint8_t data)
 {
   sbi(UCSR2B, UDRIE2);
+  // FIXME polling to do
 }
 
 ISR(USART2_RX_vect)

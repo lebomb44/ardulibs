@@ -13,13 +13,9 @@ LbCom	KEYWORD1
 #######################################
 init	KEYWORD2
 run	KEYWORD2
-rxIsReady	KEYWORD2
-rxGetSrc	KEYWORD2
-rxGetDst	KEYWORD2
-rxGetCmd	KEYWORD2
-rxLetLen	KEYWORD2
-rxGetData	KEYWORD2
-rxGetFrame	KEYWORD2
+rxMsgIsReady	KEYWORD2
+rxReleaseMsg	KEYWORD2
+rxGetMsg	KEYWORD2
 send		KEYWORD2
 enablePrint	KEYWORD2
 disablePrint	KEYWORD2
