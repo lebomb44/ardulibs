@@ -13,13 +13,16 @@
 #define ID_HOME_EASY_SEND_TC 1
 #define ID_HOME_EASY_RCV_TM  2
 
-#define ID_GSM_READY_TC    1
-#define ID_GSM_READY_TM    2
-#define ID_GSM_NETWORK_TC  3
-#define ID_GSM_NETWORK_TM  4
-#define ID_GSM_SMS_SEND_TC 5
-#define ID_GSM_SMS_GET_TC  6
-#define ID_GSM_SMS_GET_TM  7
+#define ID_GSM_INIT_TC              1
+#define ID_GSM_INIT_TM              2
+#define ID_GSM_CHECKPOWERUP_TC      3
+#define ID_GSM_CHECKPOWERUP_TM      4
+#define ID_GSM_POWERUPDOWN_TC       5
+#define ID_GSM_POWERRESET_TC        6
+#define ID_GSM_GETSIGNALSTRENGHT_TC 7
+#define ID_GSM_GETSIGNALSTRENGHT_TM 8
+#define ID_GSM_SENDSMS_TC           9
+#define ID_GSM_SENDSMS_TM           10
 
 #define ID_NRF24_CHANNEL_TC 1
 #define ID_NRF24_CHANNEL_TM 2
