@@ -112,6 +112,8 @@ void LbCom::rxGetMsg(LbMsg & msg)
 
 void LbCom::send(LbMsg & msg)
 {
+/* FIXME */
+return;
   this->send_char(0xAA);
   uint16_t len = msg.getFrameLen();
   for(uint16_t i=0; i<len ; i++)
