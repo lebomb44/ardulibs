@@ -46,14 +46,14 @@ uint16_t LbMsg::getFrameLen(void) { return 4+((uint16_t)getDataLen())+1; }
 uint8_t * LbMsg::getFrame(void) { return _frame; }
 
 void LbMsg::compute(void) {
-  setCRC(0);
+  setCRC(0x55);
   for(uint16_t i=0; i<(getFrameLen()-1); i++) {
     setCRC(_crc_ibutton_update(getCRC(), getFrame()[i]));
   }
 }
 
 bool LbMsg::check(void) {
-  uint8_t crc = 0;
+  uint8_t crc = 0x55;
   for(uint16_t i=0; i<(getFrameLen()-1); i++) {
     crc = _crc_ibutton_update(crc, getFrame()[i]);
   }
