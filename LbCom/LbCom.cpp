@@ -42,7 +42,7 @@ void LbCom::init(void)
 
   sbi(UCSR2B, RXCIE2); // Bit 7 : RXCIEn: RX Complete Interrupt Enable n : Enabled
   cbi(UCSR2B, TXCIE2); // Bit 6 : TXCIEn: TX Complete Interrupt Enable n : Disabled
-  //FIXME sbi(UCSR2B, UDRIE2); // Bit 5 : UDRIEn: USART Data Register Empty Interrupt Enable n : Enabled
+  cbi(UCSR2B, UDRIE2); // Bit 5 : UDRIEn: USART Data Register Empty Interrupt Enable n : Disabled
   cbi(UCSR2B, UCSZ22); // Bit 2 : UCSZn2: Character Size n : 011 = 8-bit
   // Bit 1 (RO) : RXB8n: Receive Data Bit 8 n
   cbi(UCSR2B, TXB82); // Bit 0 : TXB8n: Transmit Data Bit 8 n : Disabled
@@ -112,8 +112,6 @@ void LbCom::rxGetMsg(LbMsg & msg)
 
 void LbCom::send(LbMsg & msg)
 {
-/* FIXME */
-return;
   this->send_char(0xAA);
   uint16_t len = msg.getFrameLen();
   for(uint16_t i=0; i<len ; i++)
@@ -134,8 +132,8 @@ void LbCom::disablePrint(void)
 
 void LbCom::send_char(uint8_t data)
 {
-  sbi(UCSR2B, UDRIE2);
-  // FIXME polling to do
+  while ( !( UCSR2A & (1<<UDRE2)) );
+  UDR2 = data;
 }
 
 ISR(USART2_RX_vect)
