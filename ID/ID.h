@@ -4,11 +4,10 @@
 #define ID_LOST                1
 #define ID_HOME_EASY           2
 #define ID_GSM                 3
-#define ID_NFR24               4
-#define ID_BOURDILOT_FRIDGE    5
-#define ID_BOURDILOT_ROVER_IN  6
-#define ID_BOURDILOT_ROVER_OUT 7
-#define ID_BOURDILOT_TV_RC     8
+#define ID_BOURDILOT_FRIDGE    4
+#define ID_BOURDILOT_ROVER_IN  5
+#define ID_BOURDILOT_ROVER_OUT 6
+#define ID_BOURDILOT_TV_RC     7
 
 #define ID_HOME_EASY_SEND_TC 1
 #define ID_HOME_EASY_RCV_TM  2
