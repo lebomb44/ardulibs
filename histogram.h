@@ -1,24 +1,6 @@
 #ifndef _H_HISTO
 #define _H_HISTO
 
-/*----------------------------------------------------------------------+
- | 									|
- |	FILE :		histogram.h					|
- | 									|
- |	DESCRIPTION :	contains functions to build histogram in which	|
- |			values are automatically sorted	and archived	|
- |			according to a paramtizable interval lenght	|
- | 									|
- |      AUTHORS :       Marc LEROY					|
- | 									|
- |	CREATION :	16/06/94			 		|
- | 									|
- |	UPDATES :	20/12/94 Bruno Moisan				|
- |			interval lenght is parametrizable		|
- |			number of intervals is parametrizable		|
- | 									|
- +----------------------------------------------------------------------*/
-
 #include <stdio.h> 
 
 /*----------------------------------------------------------------------+
