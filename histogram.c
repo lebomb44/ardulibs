@@ -1,37 +1,4 @@
-/*----------------------------------------------------------------------+
-  | 									|
-  |	FILE :		histogram.c					|
-  | 									|
-  |	DESCRIPTION :	contains functions to build histogram in which	|
-  |			values are automatically sorted	and archived	|
-  |			according to a paramtizable interval lenght	|
-  | 									|
-  |     AUTHORS :       Marc LEROY					|
-  | 									|
-  |	CREATION :	16/06/94			 		|
-  | 									|
-  |	UPDATES :	20/12/94 Bruno Moisan				|
-  |			interval lenght is parametrizable		|
-  |			number of intervals is parametrizable		|
-  | 									|
-  |			1/04/2004 Yves Dufrenne				|
-  |			No more error_msg.h, more sample, some comments	|
-  | 									|
-  +----------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------+
-  | 									|
-  |	STANDARD INCLUDES						|
-  | 									|
-  +----------------------------------------------------------------------*/
-
 #include <stdio.h>
-
-/*----------------------------------------------------------------------+
-  | 									|
-  |	PROJECT INCLUDES						|
-  | 									|
-  +----------------------------------------------------------------------*/
 #include "histogram.h"
 
 /*----------------------------------------------------------------------+
@@ -247,4 +214,3 @@ void histo_dump( FILE *f, char *title )
   fprintf(f, "===========================================\n");
 
 }
-
