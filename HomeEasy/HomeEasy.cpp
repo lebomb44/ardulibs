@@ -3,6 +3,7 @@
 
 #include "wiring_private.h"
 #include "HomeEasy.h"
+//#include "histogram.h"
 
 Fifo_U16 * extInt0_Fifo = NULL;
 
@@ -20,6 +21,8 @@ void HomeEasy::init(void)
   for(i=0; i<64; i++) { this->codeBitStream[i] = false; }
   this->step = 0;
   disablePrint();
+  _dataLowSyn = 0;
+  _previousBitLen = 0;
 
   extInt0_Fifo = &(this->rx_fifo);
 
@@ -95,6 +98,10 @@ void HomeEasy::init(void)
   // Bit 2 : reserved
   cbi(EIMSK, INT1); // Bit 1 � INT1: External Interrupt Request 1 Enable : Disabled
   sbi(EIMSK, INT0); // Bit 0 � INT0: External Interrupt Request 0 Enable : Enabled
+
+  //histo_nb_interval(100);
+  //histo_set_delta(100);
+  //histo_init();
 }
 
 void HomeEasy::run(void)
@@ -110,14 +117,16 @@ void HomeEasy::run(void)
       //Serial.println(dataU16);
       if((1 < this->step) && (this->step < 130))
       {
+        //histo_enter(dataU16);
         /* Serial.print(dataU16); Serial.print(": "); Serial.println(this->step); */
         if(0 == (this->step%2))
         {
           if(this->isHigh(dataU16)) { this->step++; }
           else
           {
-            //Serial.print(dataU16); Serial.print(": Bad high at step "); Serial.println(this->step);
+            //if(50<this->step) {Serial.print(dataU16); Serial.print(": Bad high at step "); Serial.println(this->step); histo_dump("Bad High"); }
             this->step = 0;
+            if(this->isHigh(this->_previousBitLen) && this->isLowSync(dataU16)) { this->step = 2; }
           }
         }
         else
@@ -128,8 +137,9 @@ void HomeEasy::run(void)
             if(this->isLowLong(dataU16)) { this->codeBitStream[(this->step-3)/2] = true; this->step++; }
             else
             {
-              //Serial.print(dataU16); Serial.print(": Bad low at step "); Serial.println(this->step);
+              //if(50<this->step) {Serial.print(dataU16); Serial.print(": Bad low at step "); Serial.println(this->step); histo_dump("Bad Low"); }
               this->step = 0;
+              if(this->isHigh(this->_previousBitLen) && this->isLowSync(dataU16)) { this->step = 2; }
             }
           }
         }
@@ -159,14 +169,17 @@ void HomeEasy::run(void)
       }
       if(1 == this->step)
       {
-        if(this->isLowSync(dataU16)) { this->step++; }
+        if(this->isLowSync(dataU16)) { this->step++; /*Serial.print(dataU16); Serial.println(": isLowSync");*/ }
         else
         {
           //Serial.print(dataU16); Serial.print(": Bad lowSync at step "); Serial.println(this->step);
           this->step = 0;
+          //histo_init();
         }
       }
       if(0 == this->step) { if(this->isHigh(dataU16)) { this->step++; } }
+      // Save the current value for futur analysis
+      _previousBitLen = dataU16;
     }
   }
 }
@@ -242,6 +255,18 @@ bool HomeEasy::printIsEnabled(void)
   return _printIsEnabled;
 }
 
+void HomeEasy::histoDump(void)
+{
+  //Serial.print("Low Sync="); Serial.println(_dataLowSyn);
+  //histo_dump("HomeEasy");
+}
+
+void HomeEasy::histoInit(void)
+{
+  //histo_init();
+}
+
+
 /******************** PRIVATE ***************************/
 
 bool HomeEasy::isHigh(uint16_t timeU16)
@@ -258,12 +283,13 @@ bool HomeEasy::isLowShort(uint16_t timeU16)
 
 bool HomeEasy::isLowLong(uint16_t timeU16)
 {
-  if((2340 < timeU16) && (timeU16 < 5000)) { return true; }
+  if((1600 < timeU16) && (timeU16 < 4000)) { return true; }
   else { return false; }
 }
 
 bool HomeEasy::isLowSync(uint16_t timeU16)
 {
+  _dataLowSyn = timeU16;
   if((3000 < timeU16) && (timeU16 < 7000)) { return true; }
   else { return false; }
 }
@@ -284,3 +310,4 @@ ISR(INT0_vect)
   }
   //else { Serial.println(dataU16); }
 }
+

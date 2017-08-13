@@ -23,6 +23,8 @@ public:
   void enablePrint(void);
   void disablePrint(void);
   bool printIsEnabled(void);
+  void histoDump(void);
+  void histoInit(void);
 private:
   Fifo_U16 rx_fifo;
   uint32_t code;
@@ -33,6 +35,7 @@ private:
   bool isLowShort(uint16_t timeU16);
   bool isLowLong(uint16_t timeU16);
   bool isLowSync(uint16_t timeU16);
-};
+  uint16_t _dataLowSyn;
+  uint16_t _previousBitLen;};
 
 #endif
