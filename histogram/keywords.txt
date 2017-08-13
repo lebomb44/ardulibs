@@ -1,0 +1,21 @@
+#######################################
+# Syntax Coloring Map histogram
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+histo_nb_interval	KEYWORD2
+histo_set_delta	KEYWORD2
+histo_init	KEYWORD2
+histo_enter	KEYWORD2
+histo_enter_with_date	KEYWORD2
+histo_dump	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
