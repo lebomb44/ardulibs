@@ -18,7 +18,7 @@ public:
   uint32_t rxGetManufacturer(void);
   void rxRelease(void);
   bool txIsReady(void);
-  void send(uint32_t code);
+  void send(uint32_t manufacturer, uint8_t group, uint8_t device, uint8_t status);
   void purge(void);
   void enablePrint(void);
   void disablePrint(void);

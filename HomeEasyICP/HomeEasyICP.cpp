@@ -215,7 +215,7 @@ bool HomeEasyICP::txIsReady(void)
   return true;
 }
 
-void HomeEasyICP::send(uint32_t code)
+void HomeEasyICP::send(uint32_t manufacturer, uint8_t group, uint8_t device, uint8_t status)
 {
   /* FIXME : Not implemented */
 }

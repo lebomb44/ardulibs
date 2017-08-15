@@ -1,13 +1,18 @@
 #ifndef ID_h
 #define ID_h
 
-#define ID_LOST                1
-#define ID_HOME_EASY           2
-#define ID_GSM                 3
-#define ID_BOURDILOT_FRIDGE    4
-#define ID_BOURDILOT_ROVER_IN  5
-#define ID_BOURDILOT_ROVER_OUT 6
-#define ID_BOURDILOT_TV_RC     7
+#define ID_LOST_MASTER               1
+#define ID_LOST_SLAVE                2
+#define ID_HOME_EASY_SLAVE           3
+#define ID_GSM_SLAVE                 4
+#define ID_BOURDILOT_FREEZER_SLAVE   5
+#define ID_BOURDILOT_ROVER_IN_SLAVE  6
+#define ID_BOURDILOT_ROVER_OUT_SLAVE 7
+#define ID_BOURDILOT_TV_RC_SLAVE     8
+
+#define ID_LOST_ATMOSPHERE_SET_TC 1
+#define ID_LOST_EVENTS_CONFIG_TC  2
+#define ID_LOST_SCENES_EXEC_TC    3
 
 #define ID_HOME_EASY_SEND_TC 1
 #define ID_HOME_EASY_RCV_TM  2
@@ -26,16 +31,16 @@
 #define ID_NRF24_CHANNEL_TC 1
 #define ID_NRF24_CHANNEL_TM 2
 
-#define ID_BOURDILOT_FRIDGE_NETWORK_TC 1
-#define ID_BOURDILOT_FRIDGE_NETWORK_TM 2
-#define ID_BOURDILOT_FRIDGE_TEMP_TC    3
-#define ID_BOURDILOT_FRIDGE_TEMP_TM    4
+#define ID_BOURDILOT_FREEZER_NETWORK_TC 1
+#define ID_BOURDILOT_FREEZER_NETWORK_TM 2
+#define ID_BOURDILOT_FREEZER_TEMP_TC    3
+#define ID_BOURDILOT_FREEZER_TEMP_TM    4
 
 #define ID_ROVER_ALL_TM            1
 #define ID_ROVER_CHARGE_CONNECT_TC 2
 #define ID_ROVER_CHARGE_CONNECT_TM 3
 #define ID_ROVER_CHARGE_LEVEL_TC   4
-#define ID_ROVER_CHARGE_LEVEL_TC   5
+#define ID_ROVER_CHARGE_LEVEL_TM   5
 #define ID_ROVER_CAM_POWER_TC      6
 #define ID_ROVER_CAM_LR_TC         7
 #define ID_ROVER_CAM_UD_TC         8

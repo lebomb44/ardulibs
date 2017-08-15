@@ -230,7 +230,7 @@ bool HomeEasy::txIsReady(void)
   return true;
 }
 
-void HomeEasy::send(uint32_t code)
+void HomeEasy::send(uint32_t manufacturer, uint8_t group, uint8_t device, uint8_t status)
 {
   /* FIXME : Not implemented */
 }
