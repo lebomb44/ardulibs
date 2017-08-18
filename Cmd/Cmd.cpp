@@ -257,6 +257,6 @@ void cmdList(void)
 /**************************************************************************/
 uint32_t cmdStr2Num(char *str, uint8_t base)
 {
-    return strtol(str, NULL, base);
+    return strtoul(str, NULL, base);
 }
 
