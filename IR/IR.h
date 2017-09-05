@@ -2,16 +2,33 @@
 #define IR_h
 
 #include <inttypes.h>
+#include <Fifo_U16.h>
 
 class IR
 {
 public:
   IR();
   void init(void);
-  void setSamsung(uint32_t code);
+  void run(void);
+  bool rxSamsungCodeIsReady(void);
+  uint32_t rxGetSamsungCode(void);
+  uint16_t rxGetSamsungData(void);
+  uint16_t rxGetSamsungManufacturer(void);
+  void rxSamsungRelease(void);
+  void purge(void);
+  void enablePrint(void);
+  void disablePrint(void);
+  bool printIsEnabled(void);
 private:
-  Fifo_U16 samsungManufacturer_fifo;
-  Fifo_U08 samsungCode_fifo;
+  Fifo_U16 rx_fifo;
+  uint32_t samsungCode;
+  uint16_t samsungStep;
+  bool _printIsEnabled;
+  bool isSamsungHigh(uint16_t timeU16);
+  bool isSamsungLowShort(uint16_t timeU16);
+  bool isSamsungLowLong(uint16_t timeU16);
+  bool isSamsungSync1(uint16_t timeU16);
+  bool isSamsungSync2(uint16_t timeU16);
 };
 
 #endif

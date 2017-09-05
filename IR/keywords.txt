@@ -12,7 +12,16 @@ IR	KEYWORD1
 # Methods and Functions (KEYWORD2)
 #######################################
 init	KEYWORD2
-setSamsung	KEYWORD2
+run	KEYWORD2
+rxSamsungCodeIsReady	KEYWORD2
+rxGetSamsungCode	KEYWORD2
+rxGetSamsungData	KEYWORD2
+rxGetSamsungManufacturer	KEYWORD2
+rxSamsungRelease	KEYWORD2
+purge	KEYWORD2
+enablePrint	KEYWORD2
+disablePrint	KEYWORD2
+printIsEnabled	KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
