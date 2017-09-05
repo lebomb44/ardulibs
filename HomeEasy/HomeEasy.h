@@ -36,6 +36,7 @@ private:
   bool isLowLong(uint16_t timeU16);
   bool isLowSync(uint16_t timeU16);
   uint16_t _dataLowSyn;
-  uint16_t _previousBitLen;};
+  uint16_t _previousBitLen;
+};
 
 #endif
