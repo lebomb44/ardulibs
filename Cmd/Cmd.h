@@ -58,7 +58,7 @@ void cmdInit(void);
 void cmdPoll(void);
 void cmdAdd(const char *name, const char *desc, void (*func)(int argc, char **argv));
 void cmdStart(void);
-void cmdList(void);
+void cmdList(int arg_cnt, char **args);
 uint32_t cmdStr2Num(char *str, uint8_t base);
 
 #endif //CMD_H

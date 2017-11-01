@@ -238,7 +238,7 @@ void cmdStart(void)
     List all commands registered in the table. 
 */
 /**************************************************************************/
-void cmdList(void)
+void cmdList(int arg_cnt, char **args)
 {
     cmd_t *cmd_entry = NULL;
     for (cmd_entry = cmd_tbl; cmd_entry != NULL; cmd_entry = cmd_entry->next)
