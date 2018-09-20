@@ -60,7 +60,7 @@ const char cmd_unrecog[] PROGMEM = "Command not recognized. Try 'help' to list c
 /**************************************************************************/
 void cmd_display()
 {
-    Serial.print("> ");
+    //Serial.print("> ");
 
     fflush(stdout);
 }
@@ -134,14 +134,14 @@ void cmd_handler()
         // terminate the msg and reset the msg ptr. then send
         // it to the handler for processing.
         *msg_ptr = '\0';
-        Serial.println();
+        //Serial.println();
         cmd_parse((char *)msg);
         msg_ptr = msg;
         break;
     
     case '\b':
         // backspace 
-        Serial.print(c);
+        //Serial.print(c);
         if (msg_ptr > msg)
         {
             msg_ptr--;
@@ -150,7 +150,7 @@ void cmd_handler()
     
     default:
         // normal character entered. add it to the buffer
-        Serial.print(c);
+        //Serial.print(c);
         *msg_ptr++ = c;
         break;
     }

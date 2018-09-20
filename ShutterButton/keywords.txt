@@ -1,22 +1,16 @@
 #######################################
-# Syntax Coloring Map Shutter
+# Syntax Coloring Map ShutterButton
 #######################################
 
 #######################################
 # Datatypes (KEYWORD1)
 #######################################
 
-Shutter	KEYWORD1
+ShutterButton	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
-up	KEYWORD2
-down	KEYWORD2
-stop	KEYWORD2
-alarmEnable		KEYWORD2
-alarmDisable		KEYWORD2
-alarm_isEnabled		KEYWORD2
 run	KEYWORD2
 
 #######################################

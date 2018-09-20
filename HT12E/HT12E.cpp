@@ -4,7 +4,7 @@
 #include "wiring_private.h"
 #include "HT12E.h"
 
-Fifo_U16 * ht12e_extInt0_Fifo = NULL;
+Fifo_U16 * ht12e_extInt_Fifo = NULL;
 
 HT12E::HT12E()
 {
@@ -20,7 +20,7 @@ void HT12E::init(void)
   for(i=0; i<24; i++) { this->codeBitStream[i] = false; }
   this->step = 0;
 
-  ht12e_extInt0_Fifo = &(this->rx_fifo);
+  ht12e_extInt_Fifo = &(this->rx_fifo);
 
   cbi(TCCR1B, CS12); // Bit 2:0 - CS12:0: Clock Select : 000 = No clock source (Timer/Counter stopped).
   cbi(TCCR1B, CS11);
@@ -81,10 +81,10 @@ void HT12E::init(void)
   // Bit 6 : reserved
   // Bit 5 : reserved
   // Bit 4 : reserved
-  cbi(EICRA, ISC11); // Bit 3, 2 - ISC11, ISC10: Interrupt Sense Control 1 Bit 1 and Bit 0 : 00 = The low level of INT1 generates an interrupt request.
-  cbi(EICRA, ISC10);
-  cbi(EICRA, ISC01); // Bit 1, 0 - ISC01, ISC00: Interrupt Sense Control 0 Bit 1 and Bit 0 : 01 = Any logical change on INT0 generates an interrupt request.
-  sbi(EICRA, ISC00);
+  cbi(EICRA, ISC11); // Bit 3, 2 - ISC11, ISC10: Interrupt Sense Control 1 Bit 1 and Bit 0 : 01 = Any logical change on INT1 generates an interrupt request.
+  sbi(EICRA, ISC10);
+  //cbi(EICRA, ISC01); // Bit 1, 0 - ISC01, ISC00: Interrupt Sense Control 0 Bit 1 and Bit 0 : 00 = The low level of INT0 generates an interrupt request.
+  //cbi(EICRA, ISC00);
 
   // Bit 7 : reserved
   // Bit 6 : reserved
@@ -92,8 +92,8 @@ void HT12E::init(void)
   // Bit 4 : reserved
   // Bit 3 : reserved
   // Bit 2 : reserved
-  cbi(EIMSK, INT1); // Bit 1 - INT1: External Interrupt Request 1 Enable : Disabled
-  sbi(EIMSK, INT0); // Bit 0 - INT0: External Interrupt Request 0 Enable : Enabled
+  sbi(EIMSK, INT1); // Bit 1 - INT1: External Interrupt Request 1 Enable : Enabled
+  //cbi(EIMSK, INT0); // Bit 0 - INT0: External Interrupt Request 0 Enable : Disabled
 }
 
 void HT12E::run(void)
@@ -226,7 +226,7 @@ bool HT12E::isLong(uint16_t timeU16)
 }
 
 
-ISR(INT0_vect)
+ISR(INT1_vect)
 {
   uint16_t dataU16 = 0;
 
@@ -235,9 +235,9 @@ ISR(INT0_vect)
 
   if((300 < dataU16) && (dataU16 < 1500))
   {
-    if(false == ht12e_extInt0_Fifo->isFull())
+    if(false == ht12e_extInt_Fifo->isFull())
     {
-    	ht12e_extInt0_Fifo->push(dataU16);
+    	ht12e_extInt_Fifo->push(dataU16);
     }
   }
 }
