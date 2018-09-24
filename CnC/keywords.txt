@@ -1,0 +1,22 @@
+#######################################
+# Syntax Coloring Map For CnC
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+cncInit	KEYWORD2
+cncPoll	KEYWORD2
+cncAdd	KEYWORD2
+cncStart	KEYWORD2
+cncList KEYWORD2
+cncStr2Num	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+

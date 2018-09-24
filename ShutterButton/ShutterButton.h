@@ -9,7 +9,8 @@ class ShutterButton
 {
 public:
   ShutterButton(String name_, uint8_t upButtonPin_, uint8_t downButtonPin_);
-  void run(void);
+  void run(bool forceHK);
+  void cmdGet(int arg_cnt, char **args);
 private:
   String _name;
   Contact _upButton;

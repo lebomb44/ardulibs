@@ -6,11 +6,15 @@
 class Contact
 {
 public:
-  Contact(uint8_t pin_);
+  Contact(String name_, uint8_t pin_);
   bool isOpen(void);
   bool isClose(void);
+  void run(bool forceHK);
+  void cmdGet(int arg_cnt, char **args);
 private:
-   volatile uint8_t _pin;
+  String _name;
+  volatile uint8_t _pin;
+  volatile uint8_t _state;
 };
 
 #endif
