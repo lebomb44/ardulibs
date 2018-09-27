@@ -8,7 +8,11 @@ static uint8_t *msg_ptr;
 
 // linked list for command table
 static cnc_t *cmd_tbl_list;
-
+static const char * cnc_node;
+static const char * cnc_hkName;
+static const char * cnc_cmdGetName;
+static const char * cnc_cmdSetName;
+static const char * cnc_sepName;
 
 /**************************************************************************/
 /*!
@@ -41,16 +45,22 @@ void cnc_parse(char *cmd)
 
     // save off the number of arguments for the particular command.
     argc = i;
+    if(2 > argc) { return; }
 
     // parse the command table for valid command. used argv[0] which is the
     // actual command name typed in at the prompt
     for (cmd_entry = cmd_tbl_list; cmd_entry != NULL; cmd_entry = cmd_entry->next)
     {
-
-        if (!strcmp(argv[0], cmd_entry->cmd))
+        if (0 == strncmp_P(argv[0], cnc_node, strnlen_P(cnc_node, 50)))
         {
-            cmd_entry->func(argc, argv);
-            return;
+            if (0 == strncmp_P(argv[1], cmd_entry->cmd, strnlen_P(cmd_entry->cmd, 50)))
+            {
+                if (0 == strncmp_P(argv[2], cmd_entry->subCmd, strnlen_P(cmd_entry->subCmd, 50)))
+                {
+                    cmd_entry->func(argc, argv);
+                    return;
+                }
+            }
         }
     }
 }
@@ -104,15 +114,56 @@ void cncPoll()
     and initializes things. 
 */
 /**************************************************************************/
-void cncInit(void)
+void cncInit(const char * node)
 {
     // init the msg ptr
     msg_ptr = msg;
 
     // init the command table
     cmd_tbl_list = NULL;
+
+    cnc_node = node;
 }
 
+void cnc_hkName_set(const char * hkName)
+{
+    cnc_hkName = hkName;
+}
+
+const __FlashStringHelper * cnc_hkName_get(void)
+{
+    return (const __FlashStringHelper *) cnc_hkName;
+}
+
+void cnc_cmdGetName_set(const char * cmdGetName)
+{
+    cnc_cmdGetName = cmdGetName;
+}
+
+const __FlashStringHelper * cnc_cmdGetName_get(void)
+{
+    return (const __FlashStringHelper *) cnc_cmdGetName;
+}
+
+void cnc_cmdSetName_set(const char * cmdSetName)
+{
+    cnc_cmdSetName = cmdSetName;
+}
+
+const __FlashStringHelper * cnc_cmdSetName_get(void)
+{
+    return (const __FlashStringHelper *) cnc_cmdSetName;
+}
+
+void cnc_sepName_set(const char * sepName)
+{
+    cnc_sepName = sepName;
+}
+
+const __FlashStringHelper * cnc_sepName_get(void)
+{
+    return (const __FlashStringHelper *) cnc_sepName;
+}
 
 /**************************************************************************/
 /*!
@@ -120,9 +171,9 @@ void cncInit(void)
     at the setup() portion of the sketch. 
 */
 /**************************************************************************/
-void cncAdd(const char *name, void (*func)(int argc, char **argv))
+void cnc_Add(const char * cmd, const char * subCmd, void (*func)(int argc, char **argv))
 {
-    if(50 <= strnlen(name, 50))
+    if(50 <= strnlen(cmd, 50))
     {
         return;
     }
@@ -136,10 +187,21 @@ void cncAdd(const char *name, void (*func)(int argc, char **argv))
     }
 
     // fill out structure
-    cmd_tbl->cmd = name;
+    cmd_tbl->cmd = cmd;
+    cmd_tbl->subCmd = subCmd;
     cmd_tbl->func = func;
     cmd_tbl->next = cmd_tbl_list;
     cmd_tbl_list = cmd_tbl;
+}
+
+void cnc_cmdGet_Add(const char * cmd, void (*func)(int argc, char **argv))
+{
+    cnc_Add(cmd, cnc_cmdGetName, func);
+}
+
+void cnc_cmdSet_Add(const char * cmd, void (*func)(int argc, char **argv))
+{
+    cnc_Add(cmd, cnc_cmdSetName, func);
 }
 
 /**************************************************************************/
@@ -151,5 +213,38 @@ void cncAdd(const char *name, void (*func)(int argc, char **argv))
 uint32_t cncStr2Num(char *str, uint8_t base)
 {
     return strtoul(str, NULL, base);
+}
+
+void cnc_print_hk(const char * cmd, int value)
+{
+    Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
+    Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
+    Serial.print(cnc_hkName_get()); Serial.print(cnc_sepName_get());
+    Serial.println(value, DEC);
+}
+
+void cnc_print_hk_index(const char * cmd, int index, int value)
+{
+    Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
+    Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
+    Serial.print(cnc_hkName_get()); Serial.print(cnc_sepName_get());
+    Serial.println(index, DEC); Serial.print(cnc_sepName_get());
+    Serial.println(value, DEC);
+}
+
+void cnc_print_cmdGet(const char * cmd, int value)
+{
+    Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
+    Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
+    Serial.print(cnc_cmdGetName_get()); Serial.print(cnc_sepName_get());
+    Serial.println(value, DEC);
+}
+
+void cnc_print_cmdSet(const char * cmd, int value)
+{
+    Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
+    Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
+    Serial.print(cnc_cmdSetName_get()); Serial.print(cnc_sepName_get());
+    Serial.println(value, DEC);
 }
 

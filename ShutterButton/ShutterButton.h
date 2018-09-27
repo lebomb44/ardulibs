@@ -8,11 +8,11 @@
 class ShutterButton
 {
 public:
-  ShutterButton(String name_, uint8_t upButtonPin_, uint8_t downButtonPin_);
+  ShutterButton(const char * name_, uint8_t upButtonPin_, uint8_t downButtonPin_);
   void run(bool forceHK);
   void cmdGet(int arg_cnt, char **args);
 private:
-  String _name;
+  const char * _name;
   Contact _upButton;
   Contact _downButton;
   volatile uint8_t _buttonState;

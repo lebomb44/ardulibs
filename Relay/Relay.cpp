@@ -1,8 +1,8 @@
 #include <Arduino.h> 
-
+#include <CnC.h>
 #include "Relay.h"
 
-Relay::Relay(String name_, uint8_t pin_) : _name(name_), _pin(pin_)
+Relay::Relay(const char * name_, uint8_t pin_) : _name(name_), _pin(pin_)
 {
   pinMode(_pin, OUTPUT);
   open();
@@ -37,22 +37,22 @@ void Relay::run(bool forceHK)
   newState = isClose();
   if((newState != _state) || (true == forceHK))
   {
-    Serial.println(_name + "_hk " + newState);
+    cnc_print_hk(_name, newState);
   }
   _state = newState;
 }
 
 void Relay::cmdGet(int arg_cnt, char **args)
 {
-  Serial.println(_name + "_get " + isClose());
+  cnc_print_cmdGet(_name, isClose());
 }
 
 void Relay::cmdSet(int arg_cnt, char **args)
 {
-  if(2 == arg_cnt)
+  if(4 == arg_cnt)
   {
-    if(1 == strtoul(args[1], NULL, 10)) { close(); } else { open(); }
+    if(1 == strtoul(args[3], NULL, 10)) { close(); } else { open(); }
   }
-  Serial.println(_name + "_get " + isClose());
+  cmdGet(arg_cnt, args);
 }
 

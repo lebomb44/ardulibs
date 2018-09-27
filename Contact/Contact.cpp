@@ -1,8 +1,8 @@
 #include <Arduino.h> 
-
+#include <CnC.h>
 #include "Contact.h"
 
-Contact::Contact(String name_, uint8_t pin_) : _name(name_), _pin(pin_)
+Contact::Contact(const char * name_, uint8_t pin_) : _name(name_), _pin(pin_)
 {
   pinMode(_pin, INPUT);
   _state = isClose();
@@ -25,13 +25,13 @@ void Contact::run(bool forceHK)
   newState = isClose();
   if((newState != _state) || (true == forceHK))
   {
-    Serial.println(_name + "_hk " + newState);
+    cnc_print_hk(_name, newState);
   }
   _state = newState;
 }
 
 void Contact::cmdGet(int arg_cnt, char **args)
 {
-  Serial.println(_name + "_get " + isClose());
+  cnc_print_cmdGet(_name, isClose());
 }
 
