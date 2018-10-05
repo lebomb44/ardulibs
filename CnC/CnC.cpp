@@ -2,10 +2,6 @@
 #include "Arduino.h"
 #include "CnC.h"
 
-// command line message buffer and pointer
-static uint8_t msg[MAX_MSG_SIZE];
-static uint8_t *msg_ptr;
-
 // linked list for command table
 static cnc_t *cmd_tbl_list;
 static const char * cnc_node;
@@ -74,6 +70,10 @@ void cnc_parse(char *cmd)
 /**************************************************************************/
 void cnc_handler()
 {
+    // command line message buffer and pointer
+    static char msg[MAX_MSG_SIZE] = {0};
+    static uint8_t nbChar = 0;
+
     char c = Serial.read();
 
     switch (c)
@@ -82,14 +82,18 @@ void cnc_handler()
     case '\n':
         // terminate the msg and reset the msg ptr. then send
         // it to the handler for processing.
-        *msg_ptr = '\0';
-        cnc_parse((char *)msg);
-        msg_ptr = msg;
+        msg[nbChar] = '\0';
+        cnc_parse(msg);
+        nbChar = 0;
         break;
     default:
         // normal character entered. add it to the buffer
         //Serial.print(c);
-        *msg_ptr++ = c;
+        if(MAX_MSG_SIZE-1 > nbChar)
+        {
+            msg[nbChar] = c;
+            nbChar++;
+        }
         break;
     }
 }
@@ -116,9 +120,6 @@ void cncPoll()
 /**************************************************************************/
 void cncInit(const char * node)
 {
-    // init the msg ptr
-    msg_ptr = msg;
-
     // init the command table
     cmd_tbl_list = NULL;
 
@@ -173,11 +174,6 @@ const __FlashStringHelper * cnc_sepName_get(void)
 /**************************************************************************/
 void cnc_Add(const char * cmd, const char * subCmd, void (*func)(int argc, char **argv))
 {
-    if(50 <= strnlen(cmd, 50))
-    {
-        return;
-    }
-
     // alloc memory for command struct
     cnc_t *cmd_tbl = (cnc_t *)malloc(sizeof(cnc_t));
     if(NULL == cmd_tbl)
@@ -220,7 +216,7 @@ void cnc_print_hk(const char * cmd, int value)
     Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
     Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
     Serial.print(cnc_hkName_get()); Serial.print(cnc_sepName_get());
-    Serial.println(value, DEC);
+    Serial.println(value, DEC); Serial.flush();
 }
 
 void cnc_print_hk_index(const char * cmd, int index, int value)
@@ -228,8 +224,8 @@ void cnc_print_hk_index(const char * cmd, int index, int value)
     Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
     Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
     Serial.print(cnc_hkName_get()); Serial.print(cnc_sepName_get());
-    Serial.println(index, DEC); Serial.print(cnc_sepName_get());
-    Serial.println(value, DEC);
+    Serial.print(index, DEC); Serial.print(cnc_sepName_get());
+    Serial.println(value, DEC); Serial.flush();
 }
 
 void cnc_print_cmdGet(const char * cmd, int value)
@@ -237,7 +233,7 @@ void cnc_print_cmdGet(const char * cmd, int value)
     Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
     Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
     Serial.print(cnc_cmdGetName_get()); Serial.print(cnc_sepName_get());
-    Serial.println(value, DEC);
+    Serial.println(value, DEC); Serial.flush();
 }
 
 void cnc_print_cmdSet(const char * cmd, int value)
@@ -245,6 +241,6 @@ void cnc_print_cmdSet(const char * cmd, int value)
     Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
     Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
     Serial.print(cnc_cmdSetName_get()); Serial.print(cnc_sepName_get());
-    Serial.println(value, DEC);
+    Serial.println(value, DEC); Serial.flush();
 }
 
