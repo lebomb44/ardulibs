@@ -211,7 +211,7 @@ uint32_t cncStr2Num(char *str, uint8_t base)
     return strtoul(str, NULL, base);
 }
 
-void cnc_print_hk(const char * cmd, int value)
+void cnc_print_hk_bool(const char * cmd, bool value)
 {
     Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
     Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
@@ -219,7 +219,15 @@ void cnc_print_hk(const char * cmd, int value)
     Serial.println(value, DEC); Serial.flush();
 }
 
-void cnc_print_hk_index(const char * cmd, int index, int value)
+void cnc_print_hk_u32(const char * cmd, uint32_t value)
+{
+    Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
+    Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
+    Serial.print(cnc_hkName_get()); Serial.print(cnc_sepName_get());
+    Serial.println(value, DEC); Serial.flush();
+}
+
+void cnc_print_hk_index_float(const char * cmd, int index, float value)
 {
     Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
     Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
@@ -228,7 +236,7 @@ void cnc_print_hk_index(const char * cmd, int index, int value)
     Serial.println(value, DEC); Serial.flush();
 }
 
-void cnc_print_cmdGet(const char * cmd, int value)
+void cnc_print_cmdGet_bool(const char * cmd, bool value)
 {
     Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
     Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
@@ -236,7 +244,15 @@ void cnc_print_cmdGet(const char * cmd, int value)
     Serial.println(value, DEC); Serial.flush();
 }
 
-void cnc_print_cmdSet(const char * cmd, int value)
+void cnc_print_cmdGet_u32(const char * cmd, uint32_t value)
+{
+    Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
+    Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
+    Serial.print(cnc_cmdGetName_get()); Serial.print(cnc_sepName_get());
+    Serial.println(value, DEC); Serial.flush();
+}
+
+void cnc_print_cmdSet_bool(const char * cmd, bool value)
 {
     Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
     Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());

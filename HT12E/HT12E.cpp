@@ -3,6 +3,7 @@
 
 #include "wiring_private.h"
 #include "HT12E.h"
+//#include "histogram.h"
 
 Fifo_U16 * ht12e_extInt_Fifo = NULL;
 
@@ -82,9 +83,9 @@ void HT12E::init(void)
   // Bit 5 : reserved
   // Bit 4 : reserved
   cbi(EICRA, ISC11); // Bit 3, 2 - ISC11, ISC10: Interrupt Sense Control 1 Bit 1 and Bit 0 : 01 = Any logical change on INT1 generates an interrupt request.
-  sbi(EICRA, ISC10);
-  //cbi(EICRA, ISC01); // Bit 1, 0 - ISC01, ISC00: Interrupt Sense Control 0 Bit 1 and Bit 0 : 00 = The low level of INT0 generates an interrupt request.
-  //cbi(EICRA, ISC00);
+  cbi(EICRA, ISC10);
+  cbi(EICRA, ISC01); // Bit 1, 0 - ISC01, ISC00: Interrupt Sense Control 0 Bit 1 and Bit 0 : 00 = The low level of INT0 generates an interrupt request.
+  sbi(EICRA, ISC00);
 
   // Bit 7 : reserved
   // Bit 6 : reserved
@@ -92,8 +93,8 @@ void HT12E::init(void)
   // Bit 4 : reserved
   // Bit 3 : reserved
   // Bit 2 : reserved
-  sbi(EIMSK, INT1); // Bit 1 - INT1: External Interrupt Request 1 Enable : Enabled
-  //cbi(EIMSK, INT0); // Bit 0 - INT0: External Interrupt Request 0 Enable : Disabled
+  cbi(EIMSK, INT1); // Bit 1 - INT1: External Interrupt Request 1 Enable : Enabled
+  sbi(EIMSK, INT0); // Bit 0 - INT0: External Interrupt Request 0 Enable : Disabled
 }
 
 void HT12E::run(void)
@@ -201,7 +202,7 @@ bool HT12E::txIsReady(void)
   return true;
 }
 
-void HT12E::send(uint32_t code)
+void HT12E::send(uint16_t address, uint8_t data)
 {
   /* FIXME : Not implemented */
 }
@@ -209,6 +210,32 @@ void HT12E::send(uint32_t code)
 void HT12E::purge(void)
 {
   rx_fifo.purge();
+}
+
+void HT12E::enablePrint(void)
+{
+  _printIsEnabled = true;
+}
+
+void HT12E::disablePrint(void)
+{
+  _printIsEnabled = false;
+}
+
+bool HT12E::printIsEnabled(void)
+{
+  return _printIsEnabled;
+}
+
+void HT12E::histoDump(void)
+{
+  //Serial.print("Low Sync="); Serial.println(_dataLowSyn);
+  //histo_dump("HT12E");
+}
+
+void HT12E::histoInit(void)
+{
+  //histo_init();
 }
 
 /******************** PRIVATE ***************************/
@@ -226,7 +253,7 @@ bool HT12E::isLong(uint16_t timeU16)
 }
 
 
-ISR(INT1_vect)
+ISR(INT0_vect)
 {
   uint16_t dataU16 = 0;
 

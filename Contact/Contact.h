@@ -14,7 +14,7 @@ public:
 private:
   const char * _name;
   volatile uint8_t _pin;
-  volatile uint8_t _state;
+  volatile bool _state;
 };
 
 #endif

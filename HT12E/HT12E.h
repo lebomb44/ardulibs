@@ -16,13 +16,19 @@ public:
   uint8_t rxGetData(void);
   void rxRelease(void);
   bool txIsReady(void);
-  void send(uint32_t code);
+  void send(uint16_t address, uint8_t data);
   void purge(void);
+  void enablePrint(void);
+  void disablePrint(void);
+  bool printIsEnabled(void);
+  void histoDump(void);
+  void histoInit(void);
 private:
   Fifo_U16 rx_fifo;
   uint32_t code;
   bool codeBitStream[24];
   uint16_t step;
+  bool _printIsEnabled;
 
   bool isShort(uint16_t timeU16);
   bool isLong(uint16_t timeU16);

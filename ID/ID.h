@@ -9,6 +9,7 @@
 #define ID_BOURDILOT_ROVER_IN_SLAVE  6
 #define ID_BOURDILOT_ROVER_OUT_SLAVE 7
 #define ID_BOURDILOT_TV_RC_SLAVE     8
+#define ID_HT12E_SLAVE               9
 
 #define ID_LOST_ATMOSPHERE_SET_TC 1
 #define ID_LOST_EVENTS_CONFIG_TC  2
@@ -16,6 +17,9 @@
 
 #define ID_HOME_EASY_SEND_TC 1
 #define ID_HOME_EASY_RCV_TM  2
+
+#define ID_HT12E_SEND_TC 1
+#define ID_HT12E_RCV_TM  2
 
 #define ID_GSM_INIT_TC              1
 #define ID_GSM_INIT_TM              2

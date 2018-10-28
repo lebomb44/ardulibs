@@ -20,18 +20,18 @@ bool Contact::isClose(void)
 
 void Contact::run(bool forceHK)
 {
-  uint8_t newState = false;
+  bool newState = false;
 
   newState = isClose();
   if((newState != _state) || (true == forceHK))
   {
-    cnc_print_hk(_name, newState);
+    cnc_print_hk_bool(_name, newState);
   }
   _state = newState;
 }
 
 void Contact::cmdGet(int arg_cnt, char **args)
 {
-  cnc_print_cmdGet(_name, isClose());
+  cnc_print_cmdGet_bool(_name, isClose());
 }
 
