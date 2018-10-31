@@ -27,10 +27,12 @@ void cncPoll(void);
 void cnc_Add(const char * cmd, const char * subCmd, void (*func)(int argc, char **argv));
 void cnc_cmdGet_Add(const char * cmd, void (*func)(int argc, char **argv));
 void cnc_cmdSet_Add(const char * cmd, void (*func)(int argc, char **argv));
-void cnc_print_hk(const char * cmd, int value);
-void cnc_print_hk_index(const char * cmd, int index, int value);
-void cnc_print_cmdGet(const char * cmd, int value);
-void cnc_print_cmdSet(const char * cmd, int value);
+void cnc_print_hk_bool(const char * cmd, bool value);
+void cnc_print_hk_u32(const char * cmd, uint32_t value);
+void cnc_print_hk_index_float(const char * cmd, int index, float value);
+void cnc_print_cmdGet_bool(const char * cmd, bool value);
+void cnc_print_cmdGet_u32(const char * cmd, uint32_t value);
+void cnc_print_cmdSet_bool(const char * cmd, bool value);
 uint32_t cncStr2Num(char *str, uint8_t base);
 
 #endif //CNC_H

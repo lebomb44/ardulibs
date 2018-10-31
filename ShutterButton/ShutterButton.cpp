@@ -37,13 +37,13 @@ void ShutterButton::run(bool forceHK)
   newButtonState = getButtonState();
   if((newButtonState != _buttonState) || (true == forceHK))
   {
-    cnc_print_hk(_name, newButtonState);
+    cnc_print_hk_u32(_name, newButtonState);
   }
   _buttonState = newButtonState;
 }
 
 void ShutterButton::cmdGet(int arg_cnt, char **args)
 {
-  cnc_print_cmdGet(_name, getButtonState());
+  cnc_print_cmdGet_u32(_name, getButtonState());
 }
 
