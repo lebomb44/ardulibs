@@ -236,6 +236,17 @@ void cnc_print_hk_index_float(const char * cmd, int index, float value)
     Serial.println(value, DEC); Serial.flush();
 }
 
+void cnc_print_hk_temp_sensor(const char * cmd, uint8_t * sensor, float value)
+{
+    Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
+    Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
+    Serial.print(cnc_hkName_get()); Serial.print(cnc_sepName_get());
+    for(uint8_t i=0; i<8; i++) { if(16>sensor[i]) { Serial.print("0"); } Serial.print(sensor[i], HEX); }
+    Serial.print(cnc_sepName_get());
+    Serial.println(value, DEC); Serial.flush();
+}
+
+
 void cnc_print_cmdGet_bool(const char * cmd, bool value)
 {
     Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
