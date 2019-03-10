@@ -3,12 +3,12 @@
 #include "CnC.h"
 
 // linked list for command table
-static cnc_t *cmd_tbl_list;
-static const char * cnc_node;
-static const char * cnc_hkName;
-static const char * cnc_cmdGetName;
-static const char * cnc_cmdSetName;
-static const char * cnc_sepName;
+static cnc_t * cmd_tbl_list = NULL;
+static const char * cnc_node = NULL;
+static const char * cnc_hkName = NULL;
+static const char * cnc_cmdGetName = NULL;
+static const char * cnc_cmdSetName = NULL;
+static const char * cnc_sepName = NULL;
 
 /**************************************************************************/
 /*!
@@ -20,45 +20,51 @@ static const char * cnc_sepName;
 void cnc_parse(char *cmd)
 {
     uint8_t argc, i = 0;
-    char *argv[MAX_ARG] = {NULL};
-    char buf[50] = {0};
+    char *argv[10] = {NULL};
     cnc_t *cmd_entry = NULL;
 
-    fflush(stdout);
+    //fflush(stdout);
 
     // parse the command line statement and break it up into space-delimited
     // strings. the array of strings will be saved in the argv array.
-    argv[i] = strtok(cmd, " ");
-    do
-    {
-        argv[++i] = strtok(NULL, " ");
-    } while ((i < (MAX_MSG_SIZE/2)) && (argv[i] != NULL));
-
-    if(0 == argv[0])
+    argv[0] = strtok(cmd, " ");
+    if(NULL == argv[0])
     {
         return;
     }
+    do
+    {
+        argv[++i] = strtok(NULL, " ");
+    } while ((i < 9) && (argv[i] != NULL));
 
     // save off the number of arguments for the particular command.
     argc = i;
-    if(2 > argc) { return; }
-
-    // parse the command table for valid command. used argv[0] which is the
-    // actual command name typed in at the prompt
-    for (cmd_entry = cmd_tbl_list; cmd_entry != NULL; cmd_entry = cmd_entry->next)
+    if(2 < argc)
     {
+        // parse the command table for valid command. used argv[0] which is the
+        // actual command name typed in at the prompt
         if (0 == strncmp_P(argv[0], cnc_node, strnlen_P(cnc_node, 50)))
         {
-            if (0 == strncmp_P(argv[1], cmd_entry->cmd, strnlen_P(cmd_entry->cmd, 50)))
+            for (cmd_entry = cmd_tbl_list; cmd_entry != NULL; cmd_entry = cmd_entry->next)
             {
-                if (0 == strncmp_P(argv[2], cmd_entry->subCmd, strnlen_P(cmd_entry->subCmd, 50)))
+                if (0 == strncmp_P(argv[1], cmd_entry->cmd, strnlen_P(cmd_entry->cmd, 50)))
                 {
-                    cmd_entry->func(argc, argv);
-                    return;
+                    if (0 == strncmp_P(argv[2], cmd_entry->subCmd, strnlen_P(cmd_entry->subCmd, 50)))
+                    {
+                        cmd_entry->func(argc, argv);
+                        return;
+                    }
                 }
             }
         }
     }
+    Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
+    Serial.print("unknown"); Serial.print(cnc_sepName_get());
+    for(i=0; i<argc; i++)
+    {
+        Serial.println(argv[i]); Serial.print(cnc_sepName_get());
+    }
+    Serial.flush();
 }
 
 /**************************************************************************/
