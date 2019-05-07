@@ -1,2 +1,0 @@
-http://tmrh20.github.io/RF24/
-https://github.com/nRF24/RF24
