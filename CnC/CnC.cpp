@@ -59,11 +59,12 @@ void cnc_parse(char *cmd)
         }
     }
     Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
-    Serial.print("unknown"); Serial.print(cnc_sepName_get());
+    Serial.print("unknown");
     for(i=0; i<argc; i++)
     {
-        Serial.println(argv[i]); Serial.print(cnc_sepName_get());
+        Serial.print(cnc_sepName_get()); Serial.print(argv[i]);
     }
+    Serial.println(argv[i]);
     Serial.flush();
 }
 
