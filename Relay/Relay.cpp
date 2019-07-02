@@ -53,6 +53,5 @@ void Relay::cmdSet(int arg_cnt, char **args)
   {
     if(1 == strtoul(args[3], NULL, 10)) { close(); } else { open(); }
   }
-  cmdGet(arg_cnt, args);
 }
 

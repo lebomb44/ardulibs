@@ -9,12 +9,27 @@
 #######################################
 # Methods and Functions (KEYWORD2)
 #######################################
-cncInit	KEYWORD2
-cncPoll	KEYWORD2
-cncAdd	KEYWORD2
-cncStart	KEYWORD2
-cncList KEYWORD2
-cncStr2Num	KEYWORD2
+cncInit KEYWORD2
+cnc_hkName_set KEYWORD2
+cnc_hkName_get KEYWORD2
+cnc_cmdGetName_set KEYWORD2
+cnc_cmdGetName_get KEYWORD2
+cnc_cmdSetName_set KEYWORD2
+cnc_cmdSetName_get KEYWORD2
+cnc_sepName_set KEYWORD2
+cnc_sepName_get KEYWORD2
+cncPoll KEYWORD2
+cnc_Add KEYWORD2
+cnc_cmdGet_Add KEYWORD2
+cnc_cmdSet_Add KEYWORD2
+cnc_print_hk_bool KEYWORD2
+cnc_print_hk_u32 KEYWORD2
+cnc_print_hk_index_float KEYWORD2
+cnc_print_hk_temp_sensor KEYWORD2
+cnc_print_cmdGet_bool( KEYWORD2
+cnc_print_cmdGet_u32 KEYWORD2
+cnc_print_cmdSet_bool KEYWORD2
+cncStr2Num KEYWORD2
 
 #######################################
 # Constants (LITERAL1)

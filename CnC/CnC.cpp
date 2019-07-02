@@ -9,6 +9,11 @@ static const char * cnc_hkName = NULL;
 static const char * cnc_cmdGetName = NULL;
 static const char * cnc_cmdSetName = NULL;
 static const char * cnc_sepName = NULL;
+static const char * cnc_cmdvalName = NULL;
+static const char * cnc_cmdindexName = NULL;
+static char * cnc_msg = NULL;
+static uint8_t cnc_msg_index = 0;
+
 
 /**************************************************************************/
 /*!
@@ -17,7 +22,7 @@ static const char * cnc_sepName = NULL;
     it will jump to the corresponding function.
 */
 /**************************************************************************/
-void cnc_parse(char *cmd)
+void cnc_parse(void)
 {
     uint8_t argc, i = 0;
     char *argv[10] = {NULL};
@@ -27,15 +32,16 @@ void cnc_parse(char *cmd)
 
     // parse the command line statement and break it up into space-delimited
     // strings. the array of strings will be saved in the argv array.
-    argv[0] = strtok(cmd, " ");
+    argv[0] = strtok(cnc_msg, " ");
     if(NULL == argv[0])
     {
         return;
     }
     do
     {
-        argv[++i] = strtok(NULL, " ");
-    } while ((i < 9) && (argv[i] != NULL));
+        i++;
+        argv[i] = strtok(NULL, " ");
+    } while ((9 > i) && (NULL != argv[i]));
 
     // save off the number of arguments for the particular command.
     argc = i;
@@ -64,7 +70,7 @@ void cnc_parse(char *cmd)
     {
         Serial.print(cnc_sepName_get()); Serial.print(argv[i]);
     }
-    Serial.println(argv[i]);
+    Serial.println();
     Serial.flush();
 }
 
@@ -77,10 +83,6 @@ void cnc_parse(char *cmd)
 /**************************************************************************/
 void cnc_handler()
 {
-    // command line message buffer and pointer
-    static char msg[MAX_MSG_SIZE] = {0};
-    static uint8_t nbChar = 0;
-
     char c = Serial.read();
 
     switch (c)
@@ -89,17 +91,16 @@ void cnc_handler()
     case '\n':
         // terminate the msg and reset the msg ptr. then send
         // it to the handler for processing.
-        msg[nbChar] = '\0';
-        cnc_parse(msg);
-        nbChar = 0;
+        cnc_msg[cnc_msg_index] = '\0';
+        cnc_parse();
+        cnc_msg_index = 0;
         break;
     default:
         // normal character entered. add it to the buffer
-        //Serial.print(c);
-        if(MAX_MSG_SIZE-1 > nbChar)
+        if((MAX_MSG_SIZE-1) > cnc_msg_index)
         {
-            msg[nbChar] = c;
-            nbChar++;
+            cnc_msg[cnc_msg_index] = c;
+            cnc_msg_index++;
         }
         break;
     }
@@ -131,6 +132,14 @@ void cncInit(const char * node)
     cmd_tbl_list = NULL;
 
     cnc_node = node;
+
+    cnc_msg_index = 0;
+    cnc_msg = malloc(MAX_MSG_SIZE);
+    if(NULL == cnc_msg)
+    {
+        Serial.println("ERROR: CnC msg malloc");
+        return;
+    }
 }
 
 void cnc_hkName_set(const char * hkName)
@@ -238,8 +247,8 @@ void cnc_print_hk_index_float(const char * cmd, int index, float value)
 {
     Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
     Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
-    Serial.print(cnc_hkName_get()); Serial.print(cnc_sepName_get());
     Serial.print(index, DEC); Serial.print(cnc_sepName_get());
+    Serial.print(cnc_hkName_get()); Serial.print(cnc_sepName_get());
     Serial.println(value, DEC); Serial.flush();
 }
 
@@ -247,9 +256,9 @@ void cnc_print_hk_temp_sensor(const char * cmd, uint8_t * sensor, float value)
 {
     Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
     Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
-    Serial.print(cnc_hkName_get()); Serial.print(cnc_sepName_get());
     for(uint8_t i=0; i<8; i++) { if(16>sensor[i]) { Serial.print("0"); } Serial.print(sensor[i], HEX); }
     Serial.print(cnc_sepName_get());
+    Serial.print(cnc_hkName_get()); Serial.print(cnc_sepName_get());
     Serial.println(value, DEC); Serial.flush();
 }
 
