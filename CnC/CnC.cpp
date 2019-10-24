@@ -279,6 +279,14 @@ void cnc_print_cmdGet_u32(const char * cmd, uint32_t value)
     Serial.println(value, DEC); Serial.flush();
 }
 
+void cnc_print_cmdGet_tbd(const char * cmd)
+{
+    Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
+    Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
+    Serial.print(cnc_cmdGetName_get()); Serial.print(cnc_sepName_get());
+    Serial.flush();
+}
+
 void cnc_print_cmdSet_bool(const char * cmd, bool value)
 {
     Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
@@ -286,4 +294,3 @@ void cnc_print_cmdSet_bool(const char * cmd, bool value)
     Serial.print(cnc_cmdSetName_get()); Serial.print(cnc_sepName_get());
     Serial.println(value, DEC); Serial.flush();
 }
-
