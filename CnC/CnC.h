@@ -33,6 +33,7 @@ void cnc_print_hk_index_float(const char * cmd, int index, float value);
 void cnc_print_hk_temp_sensor(const char * cmd, uint8_t * sensor, float value);
 void cnc_print_cmdGet_bool(const char * cmd, bool value);
 void cnc_print_cmdGet_u32(const char * cmd, uint32_t value);
+void cnc_print_cmdGet_tbd(const char * cmd);
 void cnc_print_cmdSet_bool(const char * cmd, bool value);
 uint32_t cncStr2Num(char *str, uint8_t base);
 
