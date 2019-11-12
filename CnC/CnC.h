@@ -4,6 +4,7 @@
 #define MAX_MSG_SIZE 200
 #define MAX_ARG (MAX_MSG_SIZE/2)
 #include <stdint.h>
+#include <Arduino.h>
 
 // command line structure
 typedef struct _cnc_t
@@ -14,6 +15,7 @@ typedef struct _cnc_t
     struct _cnc_t *next;
 } cnc_t;
 
+void cncInit(const char * node, HardwareSerial * serial_);
 void cncInit(const char * node);
 void cnc_hkName_set(const char * hkName);
 const __FlashStringHelper * cnc_hkName_get(void);

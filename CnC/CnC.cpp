@@ -14,6 +14,7 @@ static const char * cnc_cmdindexName = NULL;
 static char * cnc_msg = NULL;
 static uint8_t cnc_msg_index = 0;
 
+HardwareSerial * cnc_serial = NULL;
 
 /**************************************************************************/
 /*!
@@ -64,14 +65,14 @@ void cnc_parse(void)
             }
         }
     }
-    Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
-    Serial.print("unknown");
+    cnc_serial->print((__FlashStringHelper *)cnc_node); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print("unknown");
     for(i=0; i<argc; i++)
     {
-        Serial.print(cnc_sepName_get()); Serial.print(argv[i]);
+        cnc_serial->print(cnc_sepName_get()); cnc_serial->print(argv[i]);
     }
-    Serial.println();
-    Serial.flush();
+    cnc_serial->println();
+    cnc_serial->flush();
 }
 
 /**************************************************************************/
@@ -83,7 +84,7 @@ void cnc_parse(void)
 /**************************************************************************/
 void cnc_handler()
 {
-    char c = Serial.read();
+    char c = cnc_serial->read();
 
     switch (c)
     {
@@ -114,7 +115,7 @@ void cnc_handler()
 /**************************************************************************/
 void cncPoll()
 {
-    while (Serial.available())
+    while (cnc_serial->available())
     {
         cnc_handler();
     }
@@ -126,8 +127,10 @@ void cncPoll()
     and initializes things. 
 */
 /**************************************************************************/
-void cncInit(const char * node)
+void cncInit(const char * node, HardwareSerial * serial_)
 {
+    cnc_serial = serial_;
+
     // init the command table
     cmd_tbl_list = NULL;
 
@@ -137,9 +140,14 @@ void cncInit(const char * node)
     cnc_msg = malloc(MAX_MSG_SIZE);
     if(NULL == cnc_msg)
     {
-        Serial.println("ERROR: CnC msg malloc");
+        cnc_serial->println("ERROR: CnC msg malloc");
         return;
     }
+}
+
+void cncInit(const char * node)
+{
+    cncInit(node, &Serial);
 }
 
 void cnc_hkName_set(const char * hkName)
@@ -194,7 +202,7 @@ void cnc_Add(const char * cmd, const char * subCmd, void (*func)(int argc, char 
     cnc_t *cmd_tbl = (cnc_t *)malloc(sizeof(cnc_t));
     if(NULL == cmd_tbl)
     {
-        Serial.println("ERROR: CnC struct malloc");
+        cnc_serial->println("ERROR: CnC struct malloc");
         return;
     }
 
@@ -229,68 +237,68 @@ uint32_t cncStr2Num(char *str, uint8_t base)
 
 void cnc_print_hk_bool(const char * cmd, bool value)
 {
-    Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
-    Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
-    Serial.print(cnc_hkName_get()); Serial.print(cnc_sepName_get());
-    Serial.println(value, DEC); Serial.flush();
+    cnc_serial->print((__FlashStringHelper *)cnc_node); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print((__FlashStringHelper *)cmd); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print(cnc_hkName_get()); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->println(value, DEC); cnc_serial->flush();
 }
 
 void cnc_print_hk_u32(const char * cmd, uint32_t value)
 {
-    Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
-    Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
-    Serial.print(cnc_hkName_get()); Serial.print(cnc_sepName_get());
-    Serial.println(value, DEC); Serial.flush();
+    cnc_serial->print((__FlashStringHelper *)cnc_node); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print((__FlashStringHelper *)cmd); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print(cnc_hkName_get()); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->println(value, DEC); cnc_serial->flush();
 }
 
 void cnc_print_hk_index_float(const char * cmd, int index, float value)
 {
-    Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
-    Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
-    Serial.print(index, DEC); Serial.print(cnc_sepName_get());
-    Serial.print(cnc_hkName_get()); Serial.print(cnc_sepName_get());
-    Serial.println(value, DEC); Serial.flush();
+    cnc_serial->print((__FlashStringHelper *)cnc_node); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print((__FlashStringHelper *)cmd); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print(index, DEC); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print(cnc_hkName_get()); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->println(value, DEC); cnc_serial->flush();
 }
 
 void cnc_print_hk_temp_sensor(const char * cmd, uint8_t * sensor, float value)
 {
-    Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
-    Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
-    for(uint8_t i=0; i<8; i++) { if(16>sensor[i]) { Serial.print("0"); } Serial.print(sensor[i], HEX); }
-    Serial.print(cnc_sepName_get());
-    Serial.print(cnc_hkName_get()); Serial.print(cnc_sepName_get());
-    Serial.println(value, DEC); Serial.flush();
+    cnc_serial->print((__FlashStringHelper *)cnc_node); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print((__FlashStringHelper *)cmd); cnc_serial->print(cnc_sepName_get());
+    for(uint8_t i=0; i<8; i++) { if(16>sensor[i]) { cnc_serial->print("0"); } cnc_serial->print(sensor[i], HEX); }
+    cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print(cnc_hkName_get()); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->println(value, DEC); cnc_serial->flush();
 }
 
 
 void cnc_print_cmdGet_bool(const char * cmd, bool value)
 {
-    Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
-    Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
-    Serial.print(cnc_cmdGetName_get()); Serial.print(cnc_sepName_get());
-    Serial.println(value, DEC); Serial.flush();
+    cnc_serial->print((__FlashStringHelper *)cnc_node); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print((__FlashStringHelper *)cmd); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print(cnc_cmdGetName_get()); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->println(value, DEC); cnc_serial->flush();
 }
 
 void cnc_print_cmdGet_u32(const char * cmd, uint32_t value)
 {
-    Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
-    Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
-    Serial.print(cnc_cmdGetName_get()); Serial.print(cnc_sepName_get());
-    Serial.println(value, DEC); Serial.flush();
+    cnc_serial->print((__FlashStringHelper *)cnc_node); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print((__FlashStringHelper *)cmd); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print(cnc_cmdGetName_get()); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->println(value, DEC); cnc_serial->flush();
 }
 
 void cnc_print_cmdGet_tbd(const char * cmd)
 {
-    Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
-    Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
-    Serial.print(cnc_cmdGetName_get()); Serial.print(cnc_sepName_get());
-    Serial.flush();
+    cnc_serial->print((__FlashStringHelper *)cnc_node); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print((__FlashStringHelper *)cmd); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print(cnc_cmdGetName_get()); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->flush();
 }
 
 void cnc_print_cmdSet_bool(const char * cmd, bool value)
 {
-    Serial.print((__FlashStringHelper *)cnc_node); Serial.print(cnc_sepName_get());
-    Serial.print((__FlashStringHelper *)cmd); Serial.print(cnc_sepName_get());
-    Serial.print(cnc_cmdSetName_get()); Serial.print(cnc_sepName_get());
-    Serial.println(value, DEC); Serial.flush();
+    cnc_serial->print((__FlashStringHelper *)cnc_node); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print((__FlashStringHelper *)cmd); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print(cnc_cmdSetName_get()); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->println(value, DEC); cnc_serial->flush();
 }
