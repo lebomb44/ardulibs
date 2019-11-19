@@ -302,3 +302,8 @@ void cnc_print_cmdSet_bool(const char * cmd, bool value)
     cnc_serial->print(cnc_cmdSetName_get()); cnc_serial->print(cnc_sepName_get());
     cnc_serial->println(value, DEC); cnc_serial->flush();
 }
+
+HardwareSerial * cnc_Serial_get(void)
+{
+    return cnc_serial;
+}

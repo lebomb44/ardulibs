@@ -31,6 +31,7 @@ cnc_print_cmdGet_u32 KEYWORD2
 cnc_print_cmdGet_tbd KEYWORD2
 cnc_print_cmdSet_bool KEYWORD2
 cncStr2Num KEYWORD2
+cnc_Serial_get KEYWORD2
 
 #######################################
 # Constants (LITERAL1)
