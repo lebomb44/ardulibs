@@ -564,7 +564,7 @@ uint8_t PN532::mifareclassic_WriteNDEFURI (uint8_t sectorNumber, uint8_t uriIden
     // in NDEF records
 
     // Setup the sector buffer (w/pre-formatted TLV wrapper and NDEF message)
-    uint8_t sectorbuffer1[16] = {0x00, 0x00, 0x03, (uint8_t) (len + 5), 0xD1, 0x01, (uint8_t) (len + 1), 0x55, uriIdentifier, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+    uint8_t sectorbuffer1[16] = {0x00, 0x00, 0x03, len + 5, 0xD1, 0x01, len + 1, 0x55, uriIdentifier, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
     uint8_t sectorbuffer2[16] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
     uint8_t sectorbuffer3[16] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
     uint8_t sectorbuffer4[16] = {0xD3, 0xF7, 0xD3, 0xF7, 0xD3, 0xF7, 0x7F, 0x07, 0x88, 0x40, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
@@ -576,7 +576,7 @@ uint8_t PN532::mifareclassic_WriteNDEFURI (uint8_t sectorNumber, uint8_t uriIden
         // 0xFE needs to be wrapped around to next block
         memcpy (sectorbuffer1 + 9, url, len);
         sectorbuffer2[0] = 0xFE;
-    } else if ((len > 7) || (len <= 22)) {
+    } else if ((len > 7) && (len <= 22)) {
         // Url fits in two blocks
         memcpy (sectorbuffer1 + 9, url, 7);
         memcpy (sectorbuffer2, url + 7, len - 7);
@@ -590,8 +590,8 @@ uint8_t PN532::mifareclassic_WriteNDEFURI (uint8_t sectorNumber, uint8_t uriIden
         // Url fits in three blocks
         memcpy (sectorbuffer1 + 9, url, 7);
         memcpy (sectorbuffer2, url + 7, 16);
-        memcpy (sectorbuffer3, url + 23, len - 24);
-        sectorbuffer3[len - 22] = 0xFE;
+        memcpy (sectorbuffer3, url + 23, len - 23);
+        sectorbuffer3[len - 23] = 0xFE;
     }
 
     // Now write all three blocks back to the card
@@ -621,11 +621,6 @@ uint8_t PN532::mifareclassic_WriteNDEFURI (uint8_t sectorNumber, uint8_t uriIden
 /**************************************************************************/
 uint8_t PN532::mifareultralight_ReadPage (uint8_t page, uint8_t *buffer)
 {
-    if (page >= 64) {
-        DMSG("Page value out of range\n");
-        return 0;
-    }
-
     /* Prepare the command */
     pn532_packetbuffer[0] = PN532_COMMAND_INDATAEXCHANGE;
     pn532_packetbuffer[1] = 1;                   /* Card number */
@@ -879,4 +874,27 @@ int16_t PN532::inRelease(const uint8_t relevantTarget){
     return HAL(readResponse)(pn532_packetbuffer, sizeof(pn532_packetbuffer));
 }
 
+uint8_t PN532::ntag21x_auth(const uint8_t *key)
+{
+    uint8_t i;
+
+    // Prepare the authentication command //
+    pn532_packetbuffer[0] = 0x42;
+    pn532_packetbuffer[1] = 0x1B;
+    memcpy (pn532_packetbuffer + 2, key, 4);
+
+    if (HAL(writeCommand)(pn532_packetbuffer, 6))
+        return 0;
+
+    // Read the response packet
+    HAL(readResponse)(pn532_packetbuffer, sizeof(pn532_packetbuffer));
+
+    // Check if the response is valid and we are authenticated???
+    if (pn532_packetbuffer[0] != 0x00) {
+        DMSG("\nAuthentification failed\n");
+        return 0;
+    }
+
+    return 1;
+}
 
