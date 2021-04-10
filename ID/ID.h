@@ -10,6 +10,7 @@
 #define ID_BOURDILOT_ROVER_OUT_SLAVE 7
 #define ID_BOURDILOT_TV_RC_SLAVE     8
 #define ID_HT12E_SLAVE               9
+#define ID_ALARM_SLAVE               10
 
 #define ID_LOST_ATMOSPHERE_SET_TC 1
 #define ID_LOST_EVENTS_CONFIG_TC  2
@@ -57,5 +58,9 @@
 #define ID_TV_RC_IR_RAW_SAMSUNG                3
 #define ID_TV_RC_IR_MACRO_SAMSUNG_GO_HDMI1     4
 #define ID_TV_RC_IR_MACRO_SAMSUNG_GO_TV        5
+
+#define ID_ALARM_STATUS_TC 1
+#define ID_ALARM_OFF_TM    2
+#define ID_ALARM_ON_TM     3
 
 #endif
