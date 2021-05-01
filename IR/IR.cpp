@@ -113,7 +113,7 @@ void IR::run(void)
       if((1 < this->samsungStep) && (this->samsungStep < 65))
       {
         /* Serial.print(dataU16); Serial.print(": "); Serial.println(this->samsungStep); */
-        if(0 == (this->samsungStep%2))
+        if(1 == (this->samsungStep%2))
         {
           if(this->isSamsungLowShort(dataU16)) { bitClear(this->samsungCode, (this->samsungStep-2)/2); this->samsungStep++; }
           else
@@ -131,7 +131,7 @@ void IR::run(void)
           if(this->isSamsungHigh(dataU16)) { this->samsungStep++; }
           else
           {
-            //Serial.print(": Bad Samsung high at step "); Serial.println(this->samsungStep);
+            //Serial.print(dataU16); Serial.print(": Bad Samsung high at step "); Serial.println(this->samsungStep);
             this->rxSamsungRelease();
           }
         }
@@ -203,7 +203,7 @@ bool IR::printIsEnabled(void)
 
 bool IR::isSamsungHigh(uint16_t timeU16) /* 0.56 ms */
 {
-  if((130 < timeU16) && (timeU16 < 170)) { return true; }
+  if((130 < timeU16) && (timeU16 < 180)) { return true; }
   else { return false; }
 }
 
@@ -215,19 +215,19 @@ bool IR::isSamsungLowShort(uint16_t timeU16) /* 0.56 ms */
 
 bool IR::isSamsungLowLong(uint16_t timeU16) /* 1.69 ms */
 {
-  if((110 < timeU16) && (timeU16 < 160)) { return true; }
+  if((110 < timeU16) && (timeU16 < 165)) { return true; }
   else { return false; }
 }
 
 bool IR::isSamsungSync1(uint16_t timeU16)
 {
-  if((180 < timeU16) && (timeU16 < 250)) { return true; }
+  if((120 < timeU16) && (timeU16 < 250)) { return true; }
   else { return false; }
 }
 
 bool IR::isSamsungSync2(uint16_t timeU16)
 {
-  if((100 < timeU16) && (timeU16 < 140)) { return true; }
+  if((70 < timeU16) && (timeU16 < 100)) { return true; }
   else { return false; }
 }
 
