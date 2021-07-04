@@ -24,6 +24,7 @@ private:
   uint16_t _rx_step;
   void send_char(uint8_t data);
   bool printIsEnabled;
+  unsigned long timeout;
 };
 
 #endif

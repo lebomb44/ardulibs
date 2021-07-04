@@ -10,7 +10,7 @@
 
 Fifo_U08 * uart_rx_fifo = NULL;
 
-LbCom::LbCom(): _rx_msg(LBMSG_DATA_MAX_SIZE), _rx_step(0), printIsEnabled(false)
+LbCom::LbCom(): _rx_msg(LBMSG_DATA_MAX_SIZE), _rx_step(0), printIsEnabled(false), timeout(0)
 {
   this->init();
 }
@@ -22,7 +22,8 @@ void LbCom::init(void)
   this->rx_fifo.init();
   this->_rx_msg.init(LBMSG_DATA_MAX_SIZE);
   this->rxReleaseMsg();
-  printIsEnabled = false;
+  this->printIsEnabled = false;
+  this->timeout = 0;
 
   uart_rx_fifo = &(this->rx_fifo);
 
@@ -79,9 +80,10 @@ void LbCom::run(void)
         }
         else { this->rxReleaseMsg(); }
       }
-      if(0 == this->_rx_step) { if(0xAA == dataU08) { this->_rx_step++; } }
+      if(0 == this->_rx_step) { if(0xAA == dataU08) { this->timeout = millis(); this->_rx_step++; } }
     }
   }
+  if((this->timeout + 10000) < millis()) { this->rxReleaseMsg(); }
 }
 
 bool LbCom::rxMsgIsReady(void)
@@ -122,12 +124,12 @@ void LbCom::send(LbMsg & msg)
 
 void LbCom::enablePrint(void)
 {
-  printIsEnabled = true;
+  this->printIsEnabled = true;
 }
 
 void LbCom::disablePrint(void)
 {
-  printIsEnabled = false;
+  this->printIsEnabled = false;
 }
 
 void LbCom::send_char(uint8_t data)
