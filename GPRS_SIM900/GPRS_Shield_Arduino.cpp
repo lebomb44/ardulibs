@@ -107,6 +107,7 @@ bool GPRS::sendSMS(char *number, char *data)
 {
     //char cmd[32];
     if(!sim900_check_with_cmd(F("AT+CMGF=1\r\n"), "OK\r\n", CMD)) { // Set message mode to ASCII
+        Serial.println("ERROR GPRS sendSMS: bad ASCII mode"); 
         return false;
     }
     delay(500);
@@ -117,6 +118,7 @@ bool GPRS::sendSMS(char *number, char *data)
 	//snprintf(cmd, sizeof(cmd),"AT+CMGS=\"%s\"\r\n", number);
 //    if(!sim900_check_with_cmd(cmd,">",CMD)) {
     if(!sim900_check_with_cmd(F("\"\r\n"),">",CMD)) {
+        Serial.println("ERROR GPRS sendSMS: bad newline"); 
         return false;
     }
     delay(1000);
