@@ -1,33 +1,27 @@
 /*
-SIM900 Serial Debug 
+    SIM900 Serial Debug
 
-This sketch is used to communicate with SIM900 with AT commands.
+    This sketch is used to communicate with SIM900 with AT commands.
 
-create on 2015/05/14, version: 1.0
-by lawliet.zou(lawliet.zou@gmail.com)
+    create on 2015/05/14, version: 1.0
+    by lawliet.zou(lawliet.zou@gmail.com)
 */
-
-#include <sim900.h>
-#include <SoftwareSerial.h>
+#include "GPRS_Shield_Arduino.h"
 #include <Wire.h>
 
-const int pin_tx = 7;
-const int pin_rx = 8;
+const int PIN_TX = 7;
+const int PIN_RX = 8;
+const int BAUDRATE = 9600;
 
-SoftwareSerial gprs(pin_tx,pin_rx);//TX,RX
+GPRS gprs(PIN_TX, PIN_RX, BAUDRATE); //RX,TX,PWR,BaudRate
 
-void setup(){
-  Serial.begin(9600);
-  sim900_init(&gprs, 9600);
+void setup() {
+    gprs.checkPowerUp();
+    Serial.begin(9600);
 }
 
-void loop(){
-  if(gprs.available()){
-    Serial.write(gprs.read());
-  }
-  if(Serial.available()){     
-    gprs.write(Serial.read()); 
-  }
+void loop() {
+    gprs.AT_Bypass();
 }
 
 
