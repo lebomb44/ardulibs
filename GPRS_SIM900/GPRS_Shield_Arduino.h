@@ -51,7 +51,7 @@ class GPRS {
     /** Create GPRS instance
         @param number default phone number during mobile communication
     */
-    GPRS(uint8_t tx,  uint8_t rx, uint32_t baudRate = 9600);
+    GPRS(HardwareSerial * serial, uint32_t baudRate = 9600);
 
     /** get instance of GPRS class
     */
@@ -545,7 +545,7 @@ class GPRS {
 
     uint32_t str_to_ip(const char* str);
 
-    SoftwareSerial gprsSerial;
+    HardwareSerial* gprsSerial;
     static GPRS* inst;
     uint32_t _ip;
     char ip_string[16]; //XXX.YYY.ZZZ.WWW + \0

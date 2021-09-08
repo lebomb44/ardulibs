@@ -34,9 +34,9 @@
 
 GPRS* GPRS::inst = NULL;
 
-GPRS::GPRS(uint8_t tx, uint8_t rx, uint32_t baudRate): gprsSerial(tx, rx) {
+GPRS::GPRS(HardwareSerial * serial, uint32_t baudRate): gprsSerial(serial) {
     inst = this;
-    sim900_init(&gprsSerial, baudRate);
+    sim900_init(gprsSerial, baudRate);
 }
 
 bool GPRS::init(void) {
@@ -975,11 +975,11 @@ int GPRS::recv(char* buf, int len) {
 }
 
 void GPRS::listen(void) {
-    gprsSerial.listen();
+    //gprsSerial->listen();
 }
 
 bool GPRS::isListening(void) {
-    return gprsSerial.isListening();
+    return true; //gprsSerial->isListening();
 }
 
 
