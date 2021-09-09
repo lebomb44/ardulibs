@@ -131,7 +131,7 @@ bool GPRS::isNetworkRegistered(void) {
 
 
 bool GPRS::networkRegister(void) {
-    return sim900_check_with_cmd(F("AT+CREG=1\r\n"), "OK", CMD);
+    return sim900_check_with_cmd(F("AT+CREG=2\r\n"), "OK", CMD);
 }
 
 
