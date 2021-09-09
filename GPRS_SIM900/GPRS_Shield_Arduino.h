@@ -90,6 +90,7 @@ class GPRS {
         @return true on success, false on fail
     */
     bool isNetworkRegistered(void);
+    bool networkRegister(void);
 
     /** Check SIM card status
         @return
