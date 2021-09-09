@@ -130,6 +130,11 @@ bool GPRS::isNetworkRegistered(void) {
 }
 
 
+bool GPRS::networkRegister(void) {
+    return sim900_check_with_cmd(F("AT+CREG=1\r\n"), "OK", CMD);
+}
+
+
 bool GPRS::sendSMS(const char* number, const char* data) {
 
     //180822 In the init function
