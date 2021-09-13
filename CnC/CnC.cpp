@@ -14,7 +14,7 @@ static const char * cnc_cmdindexName = NULL;
 static char * cnc_msg = NULL;
 static uint8_t cnc_msg_index = 0;
 
-HardwareSerial * cnc_serial = NULL;
+Stream * cnc_serial = NULL;
 
 /**************************************************************************/
 /*!
@@ -127,7 +127,7 @@ void cncPoll()
     and initializes things. 
 */
 /**************************************************************************/
-void cncInit(const char * node, HardwareSerial * serial_)
+void cncInit(const char * node, Stream * serial_)
 {
     cnc_serial = serial_;
 
@@ -303,7 +303,7 @@ void cnc_print_cmdSet_bool(const char * cmd, bool value)
     cnc_serial->println(value, DEC); cnc_serial->flush();
 }
 
-HardwareSerial * cnc_Serial_get(void)
+Stream * cnc_Serial_get(void)
 {
     return cnc_serial;
 }

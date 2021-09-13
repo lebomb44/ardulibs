@@ -15,7 +15,7 @@ typedef struct _cnc_t
     struct _cnc_t *next;
 } cnc_t;
 
-void cncInit(const char * node, HardwareSerial * serial_);
+void cncInit(const char * node, Stream * serial_);
 void cncInit(const char * node);
 void cnc_hkName_set(const char * hkName);
 const __FlashStringHelper * cnc_hkName_get(void);
@@ -38,7 +38,7 @@ void cnc_print_cmdGet_u32(const char * cmd, uint32_t value);
 void cnc_print_cmdGet_tbd(const char * cmd);
 void cnc_print_cmdSet_bool(const char * cmd, bool value);
 uint32_t cncStr2Num(char *str, uint8_t base);
-HardwareSerial * cnc_Serial_get(void);
+Stream * cnc_Serial_get(void);
 
 #endif //CNC_H
 
