@@ -24,10 +24,14 @@ cnc_cmdGet_Add KEYWORD2
 cnc_cmdSet_Add KEYWORD2
 cnc_print_hk_bool KEYWORD2
 cnc_print_hk_u32 KEYWORD2
+cnc_print_hk_float KEYWORD2
 cnc_print_hk_index_float KEYWORD2
 cnc_print_hk_temp_sensor KEYWORD2
-cnc_print_cmdGet_bool( KEYWORD2
+cnc_print_hk_str KEYWORD2
+cnc_print_cmdGet_bool KEYWORD2
 cnc_print_cmdGet_u32 KEYWORD2
+cnc_print_cmdGet_float KEYWORD2
+cnc_print_cmdGet_str KEYWORD2
 cnc_print_cmdGet_tbd KEYWORD2
 cnc_print_cmdSet_bool KEYWORD2
 cncStr2Num KEYWORD2

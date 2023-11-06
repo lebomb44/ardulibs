@@ -251,6 +251,14 @@ void cnc_print_hk_u32(const char * cmd, uint32_t value)
     cnc_serial->println(value, DEC); cnc_serial->flush();
 }
 
+void cnc_print_hk_float(const char * cmd, float value)
+{
+    cnc_serial->print((__FlashStringHelper *)cnc_node); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print((__FlashStringHelper *)cmd); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print(cnc_hkName_get()); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->println(value); cnc_serial->flush();
+}
+
 void cnc_print_hk_index_float(const char * cmd, int index, float value)
 {
     cnc_serial->print((__FlashStringHelper *)cnc_node); cnc_serial->print(cnc_sepName_get());
@@ -270,6 +278,13 @@ void cnc_print_hk_temp_sensor(const char * cmd, uint8_t * sensor, float value)
     cnc_serial->println(value, DEC); cnc_serial->flush();
 }
 
+void cnc_print_hk_str(const char * cmd, const char * value)
+{
+    cnc_serial->print((__FlashStringHelper *)cnc_node); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print((__FlashStringHelper *)cmd); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print(cnc_hkName_get()); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->println(value); cnc_serial->flush();
+}
 
 void cnc_print_cmdGet_bool(const char * cmd, bool value)
 {
@@ -285,6 +300,22 @@ void cnc_print_cmdGet_u32(const char * cmd, uint32_t value)
     cnc_serial->print((__FlashStringHelper *)cmd); cnc_serial->print(cnc_sepName_get());
     cnc_serial->print(cnc_cmdGetName_get()); cnc_serial->print(cnc_sepName_get());
     cnc_serial->println(value, DEC); cnc_serial->flush();
+}
+
+void cnc_print_cmdGet_float(const char * cmd, float value)
+{
+    cnc_serial->print((__FlashStringHelper *)cnc_node); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print((__FlashStringHelper *)cmd); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print(cnc_cmdGetName_get()); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->println(value); cnc_serial->flush();
+}
+
+void cnc_print_cmdGet_str(const char * cmd, const char * value)
+{
+    cnc_serial->print((__FlashStringHelper *)cnc_node); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print((__FlashStringHelper *)cmd); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print(cnc_cmdGetName_get()); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->println(value); cnc_serial->flush();
 }
 
 void cnc_print_cmdGet_tbd(const char * cmd)
