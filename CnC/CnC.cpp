@@ -251,6 +251,14 @@ void cnc_print_hk_u32(const char * cmd, uint32_t value)
     cnc_serial->println(value, DEC); cnc_serial->flush();
 }
 
+void cnc_print_hk_i32(const char * cmd, int32_t value)
+{
+    cnc_serial->print((__FlashStringHelper *)cnc_node); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print((__FlashStringHelper *)cmd); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->print(cnc_hkName_get()); cnc_serial->print(cnc_sepName_get());
+    cnc_serial->println(value, DEC); cnc_serial->flush();
+}
+
 void cnc_print_hk_float(const char * cmd, float value)
 {
     cnc_serial->print((__FlashStringHelper *)cnc_node); cnc_serial->print(cnc_sepName_get());
